@@ -1,1 +1,1 @@
-#My Personal Website - ethanhargrove.com
+# My Personal Website - ethanhargrove.com
