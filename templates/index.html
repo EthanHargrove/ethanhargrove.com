@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+<div class="container">
+    <div class="row row-header">
+      <div class="col-6 col-sm-4 col-md-3 align-items-center align-self-center">
+        <img src="{{ url_for('static', filename='img/portrait.JPG') }}" class="img-fluid rounded">
+      </div>
+      <div class="col-6 col-sm-8 col-md-9 align-items-center align-self-center">
+        <h1>Ethan Hargrove</h1>
+        <p class="d-none d-sm-flex">University of Bath MSc Computer Science Student</p>
+        <p class="d-none d-sm-flex">University of Toronto HBSc Planetary Science Graduate</p>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-lg">
+    <div class="row" style="padding: 0px 15px 0px 15px;">
+        <div class="col-10 offset-1 col-md-7 offset-md-0 order-md-last offset-lg-1" style="padding-left: 45px;">
+            <div class="row justify-content-center">
+                <div>
+                    <h2 class="text-center text-md-left">About Me</h2>
+                    <p>
+                        I have recently completed my Honours Bachelor of Science from the University of Toronto with a specialization in planetary science and a minor in mathematics.
+                        I am currently an MSc Computer Science student at the University of Bath with an interest in machine learning.
+                    </p>
+                    <p>Some of my other interests include: scientific computing, data science, embedded systems, space exploration, entrepreneurship, philosophy, and travel.<br><br> Feel free to contact me by email or through
+                    <a href="https://www.linkedin.com/in/ethan-hargrove" target="_blank" style="color: inherit;"><u>LinkedIn</u></a>.</p>
+                    <br>
+                </div>
+            </div>
+            <div class="row" id="contactForm">
+                <br><br>
+            </div>
+            <div class="row justify-content-center" style="padding-top: 15px; padding-bottom: 15px;">
+                <form action="" method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            {{ form.name.label }}
+                            {{ form.name(maxlength=50, class="form-control") }}
+                        </div>
+                        <div class="col-12 col-md-6">
+                            {{ form.email.label }}
+                            {{ form.email(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            {{ form.subject.label }}
+                            {{ form.subject(maxlength=50, class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            {{ form.message.label }}
+                            {{ form.message(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12">
+                            {{ form.submit(href="#", class="btn btn-primary mt-2 btn-outline-light shadow-none") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row" id="contactForm">
+                <br><br>
+            </div>
+        </div>
+        <div class="col-8 offset-2 col-sm-8 offset-sm-2 col-md-4 offset-md-0 order-md-first">
+            <a href="./projects">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center card-title" style="color: #E5EFEA;">Projects</h2>
+                        <img src="{{ url_for('static', filename='img/trappist1.png') }}" class="img-fluid rounded card-img">
+                    </div>
+                </div>
+            </a>
+            <br>
+            <a href="./CV">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center card-title" style="color: #E5EFEA;">CV</h2>
+                        <img src="{{ url_for('static', filename='img/grad.jpg') }}" class="img-fluid rounded card-img">
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

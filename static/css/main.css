@@ -1,0 +1,264 @@
+.navbar-dark {
+    background-color: #F5AC29;
+}
+
+.navbar-expand {
+    margin: 15px 0px 0px 0px;
+}
+
+.jumbotron {
+    padding: 70px 30px 70px 30px;
+    margin: 0px auto;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='42' height='42' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(135)'%3E%3Crect width='100%25' height='100%25' fill='rgba(31, 39, 68,1)'/%3E%3Ccircle cx='40' cy='20' r='1' fill='rgba(187, 111, 27,1)'/%3E%3Ccircle cx='0' cy='20' r='1' fill='rgba(187, 111, 27,1)'/%3E%3Ccircle cx='20' cy='40' r='1' fill='rgba(187, 111, 27,1)'/%3E%3Ccircle cx='20' cy='0' r='1' fill='rgba(187, 111, 27,1)'/%3E%3Ccircle cx='39' cy='1' r='1' fill='rgba(121, 85, 72,1)'/%3E%3Ccircle cx='1' cy='39' r='1' fill='rgba(121, 85, 72,1)'/%3E%3Ccircle cx='39' cy='39' r='1' fill='rgba(121, 85, 72,1)'/%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(121, 85, 72,1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E ");
+    color: #E5EFEA !important;
+}
+
+.border {
+    height: 2px;
+}
+
+figcaption .btn {
+    margin-top: 5px;
+}
+
+.btn-lg {
+    color:#E5EFEA !important;
+}
+
+.navbar-right{
+    position: absolute;
+    right: 2%;
+}
+
+.card {
+    border-radius: 5% !important;
+    margin: 15px 0px;
+    background-color: #F5AC29 !important;
+}
+
+.icon-rebound-dark {
+    background-image: url("/static/img/rebound_logo_dark.png") !important;
+    background-size: cover;
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+}
+
+.text-eqn {
+    font-size: 16px;
+}
+
+#kroupaIMF {
+    font-size: 17px;
+}
+
+#firstTrans {
+    font-size: 17px;
+}
+
+#meanAnomaly {
+    font-size: 14px;
+}
+
+#arctan2 {
+    font-size: 16px;
+}
+
+#trueAnomaly {
+    font-size: 16px;
+}
+
+.sidebar-btn {
+    width: 50%;
+}
+
+#randomCarousel {
+    font-size: 24px;
+}
+
+#darkDiv {
+    padding-left: 95% !important;
+    padding-bottom: 10px !important;
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    bottom: 0;
+}
+
+@media(max-width: 992px) {
+    #kroupaIMF {
+        font-size: 16px;
+    }
+    #meanAnomaly {
+        font-size: 11px;
+    }
+    #firstTrans {
+        font-size: 14px;
+    }
+    #arctan2 {
+        font-size: 15px;
+    }
+    #trueAnomaly {
+        font-size: 15px;
+    }
+    .text-eqn {
+        font-size: 14px;
+    }
+    .sidebar-btn {
+        width: 60%;
+    }
+    #randomCarousel {
+        font-size: 22px;
+    }
+    #darkDiv {
+        padding-left: 94% !important;
+    }
+}
+
+@media(max-width: 900px) {
+    #kroupaIMF {
+        font-size: 15px;
+    }
+    #meanAnomaly {
+        font-size: 10px;
+    }
+    #firstTrans {
+        font-size: 14px;
+    }
+    #arctan2 {
+        font-size: 14px;
+    }
+    #trueAnomaly {
+        font-size: 14px;
+    }
+    .text-eqn {
+        font-size: 14px;
+    }
+    .sidebar-btn {
+        width: 80%;
+    }
+    #randomCarousel {
+        font-size: 18px;
+    }
+    #darkDiv {
+        padding-left: 93% !important;
+    }
+}
+
+@media(max-width: 768px) {
+    #kroupaIMF {
+        font-size: 14px;
+    }
+    #meanAnomaly {
+        font-size: 9px;
+    }
+    #firstTrans {
+        font-size: 14px;
+    }
+    #arctan2 {
+        font-size: 14px;
+    }
+    #trueAnomaly {
+        font-size: 14px;
+    }
+    .text-eqn {
+        font-size: 14px;
+    }
+    .sidebar-btn {
+        width: 80%;
+    }
+    #randomCarousel {
+        font-size: 18px;
+    }
+    #darkDiv {
+        padding-left: 91% !important;
+    }
+}
+
+@media(max-width: 576px) {
+    #kroupaIMF {
+        font-size: 14px;
+    }
+    #meanAnomaly {
+        font-size: 9px;
+    }
+    #firstTrans {
+        font-size: 14px;
+    }
+    #arctan2 {
+        font-size: 13px;
+    }
+    #trueAnomaly {
+        font-size: 13px;
+    }
+    .text-eqn {
+        font-size: 13px;
+    }
+    .sidebar-btn {
+        width: 80%;
+    }
+    #randomCarousel {
+        font-size: 19px;
+    }
+    #darkDiv {
+        padding-left: 91% !important;
+    }
+}
+
+@media(max-width: 498px) {
+    #kroupaIMF {
+        font-size: 10px;
+    }
+    #meanAnomaly {
+        font-size: 6px;
+    }
+    #firstTrans {
+        font-size: 10px;
+    }
+    #arctan2 {
+        font-size: 10px;
+    }
+    #trueAnomaly {
+        font-size: 12px;
+    }
+    .text-eqn {
+        font-size: 10px;
+    }
+    .sidebar-btn {
+        width: 80%;
+    }
+    #randomCarousel {
+        font-size: 14px;
+    }
+    #darkDiv {
+        padding-left: 90% !important;
+    }
+}
+
+#newtonCarousel {
+    background: #F5AC29;
+    overflow: hidden;
+    border-radius: 5%;
+}
+
+#bisectionCarousel {
+    background: #F5AC29;
+    overflow: hidden;
+    border-radius: 5%;
+}
+
+.carousel-control-prev {
+    background: none;
+    border: none;
+}
+
+.carousel-control-next {
+    background: none;
+    border: none;
+}
+
+.carousel-caption {
+    width:100%;
+    height:100%;
+    left: 0 !important;
+    top: 1%;
+}

@@ -1,0 +1,139 @@
+from flask import Flask, render_template, request, session
+from forms import DesktopRandomSystemForm, MobileRandomSystemForm, ContactForm
+from flask_mobility import Mobility
+from numpy import transpose, empty
+from rebound import OrbitPlot
+from sigfig import round
+from numpy.random import randint
+import io
+import base64
+from matplotlib import pyplot as plt
+from system_generation import get_star_probs, get_star_mass, generate_system
+from hidden_info import secret_key
+
+
+app = Flask(__name__)
+Mobility(app)
+app.config["SECRET_KEY"] = secret_key
+
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/home", methods=["GET", "POST"])
+def home():
+    form = ContactForm()
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        if form.validate_on_submit():
+            print("Okay")
+        else:
+            session["dark_mode"] = not session["dark_mode"]
+    return render_template("index.html", title="Home", dark_mode=session["dark_mode"], form=form)
+
+@app.route("/CV", methods=["GET", "POST"])
+def cv():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        session["dark_mode"] = not session["dark_mode"]
+    return render_template("CV.html", title="CV", dark_mode=session["dark_mode"])
+
+@app.route("/projects", methods=["GET", "POST"])
+def projects():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        session["dark_mode"] = not session["dark_mode"]
+    return render_template("projects.html", title="Projects", dark_mode=session["dark_mode"])
+
+@app.route("/transit_timing", methods=["GET", "POST"])
+def ttvs():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        session["dark_mode"] = not session["dark_mode"]
+    return render_template("ttvs.html", title="Transit Timing", dark_mode=session["dark_mode"])
+
+@app.route("/ttv_explanation", methods=["GET", "POST"])
+def ttv_explanation():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        session["dark_mode"] = not session["dark_mode"]
+    return render_template("ttv_explanation.html", title="Transit Timing Explained", dark_mode=session["dark_mode"])
+
+@app.route("/random_system", methods=["GET", "POST"])
+def random_system():
+    POST = False
+    if request.MOBILE:
+        form = MobileRandomSystemForm()
+    else:
+        form = DesktopRandomSystemForm()
+    parameters = ["Mass", "Period (days)", "Eccentricity", "Inclination (radians)",
+                      "Longitude of Ascending Node (radians)", "Argument of Periapsis (radians)", "True Anomaly (radians)"]
+    param_symbols = ["\(M_\odot\)", "\(P\) (days)", "\(e\)", "\(i\) (rad)", "\(\Omega\) (rad)", "\(\omega\) (rad)", r"\(\nu\) (rad)"]
+    sorted_sys_param = []
+    transposed_param_string = []
+    fancy_pngImageB64String = ""
+    slices_pngImageB64String = ""
+    num_planets = 0
+    if request.method == "POST":
+        if form.num_planets.data:
+            POST = True
+            if request.MOBILE:
+                num_planets = form.num_planets.data
+            else:
+                num_planets = form.num_planets.data
+            if num_planets == 8:
+                num_planets = randint(2,8)
+            star_mass = form.star_mass.data
+            if star_mass is None:
+                brackets, star_probs = get_star_probs(1000)
+                star_mass = get_star_mass(brackets=brackets, star_probs=star_probs)
+            else:
+                star_mass = float(star_mass)
+            terr_only = form.terr_only.data
+            sorted_sys_param, sim = generate_system(num_planets, star_mass, terr_only)
+            transposed_param = transpose(sorted_sys_param)
+            transposed_param_string = empty(transposed_param.shape, dtype="object")
+            for i, param in enumerate(transposed_param):
+                for j, value in enumerate(param):
+                    if 0.0 < value < 0.01:
+                        string = str(round(value, sigfigs=5, notation="sci"))
+                        E_ind = string.index('E')
+                        string = r"\(" + string[0:E_ind] + r"\times 10^{" +  string[E_ind+1:] +  "}\)"
+                    else:
+                        string = str(round(value, sigfigs=5))
+
+                    transposed_param_string[i,j] = string
+
+            px = 1/plt.rcParams["figure.dpi"]
+
+            fancy_fig, fancy_ax = OrbitPlot(sim, unitlabel="(AU)", figsize=(400*px, 400*px), fancy=True, color=True)
+            fancy_pngImage = io.BytesIO()
+            plt.savefig(fancy_pngImage, bbox_inches="tight", backend="agg", facecolor="#E5EFEA")
+            fancy_pngImageB64String = "data:image/png;base64,"
+            fancy_pngImageB64String += base64.b64encode(fancy_pngImage.getvalue()).decode('utf8')
+
+            slices_fig, slices_sub1, slices_sub2, slices_sub3 = OrbitPlot(sim, slices=1.0, unitlabel="(AU)", figsize=(400*px, 400*px), color=True)
+            slices_pngImage = io.BytesIO()
+            plt.savefig(slices_pngImage, bbox_inches="tight", backend="agg", facecolor="#E5EFEA")
+            slices_pngImageB64String = "data:image/png;base64,"
+            slices_pngImageB64String += base64.b64encode(slices_pngImage.getvalue()).decode('utf8')
+        else:
+            session["dark_mode"] = not session["dark_mode"]
+    return render_template("random_system.html", title="Random System Generator", form=form, param_symbols=param_symbols,
+    sorted_sys_param=sorted_sys_param, transposed_param=transposed_param_string, parameters=parameters, fancy_image=fancy_pngImageB64String,
+    slices_image=slices_pngImageB64String, POST=POST, dark_mode=session["dark_mode"])
+
+@app.route("/random_system_explanation", methods=["GET", "POST"])
+def random_system_explanation():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        session["dark_mode"] = not session["dark_mode"]
+    return render_template("random_system_explanation.html", title="Random System Generator Explained", dark_mode=session["dark_mode"])
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
