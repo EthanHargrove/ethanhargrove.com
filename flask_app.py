@@ -9,26 +9,47 @@ import io
 import base64
 from matplotlib import pyplot as plt
 from system_generation import get_star_probs, get_star_mass, generate_system
-from hidden_info import secret_key
+from hidden_info import secret_key, email_password
+from flask_mail import Mail, Message
+
 
 
 app = Flask(__name__)
 Mobility(app)
 app.config["SECRET_KEY"] = secret_key
 
+app.config['MAIL_SUPPRESS_SEND'] = False
+app.config['TESTING'] = False
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'ethanhargrove99@gmail.com'
+app.config['MAIL_PASSWORD'] = email_password
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def home():
     form = ContactForm()
+    message_sent = False
     if "dark_mode" not in session:
         session["dark_mode"] = False
     if request.method == "POST":
         if form.validate_on_submit():
-            print("Okay")
+            name = form.name.data
+            email = form.email.data
+            subject = form.subject.data
+            body = form.message.data
+            message = Message(subject, sender=app.config["MAIL_USERNAME"], recipients = [app.config["MAIL_USERNAME"]])
+            message.body = f"name: {name}\nemail: {email}\nmessage: {body}"
+            mail.send(message)
+            message_sent = True
+            form = ContactForm(formdata=None)
         else:
             session["dark_mode"] = not session["dark_mode"]
-    return render_template("index.html", title="Home", dark_mode=session["dark_mode"], form=form)
+    return render_template("index.html", title="Home", dark_mode=session["dark_mode"], form=form, message_sent=message_sent)
 
 @app.route("/CV", methods=["GET", "POST"])
 def cv():

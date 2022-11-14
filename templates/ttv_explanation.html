@@ -9,6 +9,23 @@
 {% endblock %}
 
 {% block body %}
+<div class="modal" tabindex="-1" role="dialog" id="myPaper">
+    <div class="modal-dialog modal-lg" role="document" style="min-width:70%; min-height:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <embed class="embed-responsive-item" src="{{ url_for('static', filename='files/transittiming_paper.pdf') }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <body data-spy="scroll" data-target="#toc">
     <div class="container">
         <div class="row">
@@ -16,7 +33,7 @@
                 <nav id="toc" data-toggle="toc" style="padding-top: 100px;" class="sticky-top d-none d-md-block">
                     <div class="btn-toolbar d-none d-md-block" role="toolbar" style="padding-left: 20px;">
                         <a href="{{ url_for('ttvs') }}"><button type="button" class="btn btn-sm btn-warning mr-2 btn-outline-dark shadow-none sidebar-btn">Try It Out</button></a>
-                        <button type="button" class="btn btn-sm btn-warning btn-outline-dark sidebar-btn mt-1 mb-1"><i class="fa-brands fa-github fa-lg"></i> Code</button>
+                        <a href="https://github.com/EthanHargrove/TTV-Inversion-Problem" target="_blank"><button type="button" class="btn btn-sm btn-warning btn-outline-dark sidebar-btn mt-1 mb-1"><i class="fa-brands fa-github fa-lg"></i> Code</button></a>
                     </div>
                 </nav>
             </div>
@@ -24,6 +41,22 @@
                 <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
             </div>
             <div class="col-12 col-md-9">
+                <hr class="border d-md-none">
+                <div class="row">
+                    <div class="col-12 col-md-9">
+                        <p>
+                            This is an expansion of my undergraduate research project, that performed under the supervision of <a href="http://hanno-rein.de/" target="_blank">Professor Hanno Rein</a>.
+                            <a href="{{ url_for('static', filename='files/transittiming_paper.pdf') }}" target="_blank"><button type="button" class="btn d-md-none btn-outline-light shadow-none">View paper</button></a>
+                        </p>
+                    </div>
+                    <div class="col-3 d-none d-md-block">
+                        <p>
+                            <button type="button" class="btn d-none d-md-block btn-outline-light shadow-none" data-toggle="modal" data-target="#myPaper">
+                                View paper
+                            </button>
+                        </p>
+                    </div>
+                </div>
                 <hr class="border">
                 <div class="row">
                     <div class="col-12">
@@ -62,12 +95,6 @@
                             Observing periodic decreases in a star's light allows us to detect planets that we might not be able to directly see.
                             The period and magnitude of these decreases tell us the orbital period and radius of the planet.
                         </p>
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <video class="embed-responsive-item" controls>
-                                <source src="{{ url_for('static', filename='files/transit-method.mp4') }}" type="video/mp4">
-                                Video not compatible with device
-                            </video>
-                        </div>
                     </div>
                 </div>
                 <hr class="border">
@@ -85,7 +112,7 @@
                         <div class="col-12 col-lg-10 offset-lg-1">
                             <figure>
                                 <img src="{{ url_for('static', filename='files/trappist1gif.gif') }}" class="img-fluid">
-                                <figcaption class="figure-caption text-right text-lg-left"><a href="#" class="btn btn-sm btn-outline-light shadow-none"><i class="fa-brands fa-github fa-lg"></i> Animation Code</a></figcaption>
+                                <figcaption class="figure-caption text-right text-lg-left"><a href="https://github.com/EthanHargrove/TTV-Inversion-Problem/blob/master/ttv_animation.py" class="btn btn-sm btn-outline-light shadow-none" target="_blank"><i class="fa-brands fa-github fa-lg"></i> Animation Code</a></figcaption>
                             </figure>
                         </div>
                     </div>
@@ -519,4 +546,14 @@
         </div>
     </div>
 </body>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function() {
+        if(window.location.href.indexOf('#myPaper') != -1) {
+            $('#myPaper').modal('show');
+        }
+    });
+</script>
 {% endblock %}

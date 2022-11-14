@@ -62,6 +62,9 @@
                     <div class="form-row">
                         <div class="col-12">
                             {{ form.submit(href="#", class="btn btn-primary mt-2 btn-outline-light shadow-none") }}
+                            {% if message_sent %}
+                            <p>Message sent</p>
+                            {% endif %}
                         </div>
                     </div>
                 </form>
@@ -92,3 +95,4 @@
     </div>
 </div>
 {% endblock %}
+{% block script %} {% endblock %}

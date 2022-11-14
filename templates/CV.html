@@ -10,7 +10,7 @@
         <button type="button" class="btn btn-danger btn-lg d-none d-md-block btn-outline-light shadow-none" data-toggle="modal" data-target="#myCV">
             View as PDF
         </button>
-        <a href="{{ url_for('static', filename='files/CV.pdf') }}" target="_blank"><button type="button" class="btn btn-danger d-md-none btn-outline-light shadow-none">View as PDF</button></a>
+        <a href="{{ url_for('static', filename='files/website_cv.pdf') }}" target="_blank"><button type="button" class="btn btn-danger d-md-none btn-outline-light shadow-none">View as PDF</button></a>
     </div>
 </div>
 {% endblock %}
@@ -26,24 +26,12 @@
             </div>
             <div class="modal-body">
                 <div class="embed-responsive embed-responsive-4by3">
-                    <embed class="embed-responsive-item" src="{{ url_for('static', filename='files/CV.pdf') }}">
+                    <embed class="embed-responsive-item" src="{{ url_for('static', filename='files/website_cv.pdf') }}">
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- <div class="modal" id="myCV" role="document">
-    <div class="modal-content" style="height: 70%; width: 70%; position: fixed; left: 15%; right: 15%;">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">
-                &times;
-            </button>
-        </div>
-        <div class="modal-body">
-            <iframe src="{{ url_for('static', filename='files/cv.pdf') }}"></iframe>
-        </div>
-    </div>
-</div> -->
 <div class="container-lg">
     <div class="row">
         <div class="col-12">
@@ -155,3 +143,4 @@
     </div>
 </div>
 {% endblock %}
+{% block script %} {% endblock %}
