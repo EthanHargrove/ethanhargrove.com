@@ -16,7 +16,7 @@ from misc_funcs import handle_dark_mode
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 Mobility(app)
 app.config["SECRET_KEY"] = secret_key
 app.config['MAIL_SUPPRESS_SEND'] = False
@@ -161,6 +161,10 @@ def random_system_explanation():
     handle_dark_mode()
     return render_template("random_system_explanation.html", title="Random System Generator Explained", dark_mode=session["dark_mode"])
 
+
+@app.route("/sitemap.xml", methods=["GET"])
+def sitemap():
+    return app.send_static_file("sitemap.xml")
 
 if __name__ == "__main__":
     app.run(debug=True)
