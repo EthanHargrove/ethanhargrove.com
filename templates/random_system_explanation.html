@@ -2,8 +2,11 @@
 
 {% block jumbotron %}
 <div class="row row-header">
-    <div class="col-12 col-sm-8 offset-sm-2">
-        <h1 class="text-center">Procedural Generation of Planetary Systems</h1>
+    <div class="col-5 col-sm-4 col-md-3 align-items-center align-self-center">
+        <img src="{{ url_for('static', filename='img/trappist1.png') }}" class="img-fluid rounded border border-light">
+    </div>
+    <div class="col-7 col-sm-8 col-md-9 align-items-center align-self-center">
+        <h1>Procedural Generation of Planetary Systems</h1>
     </div>
 </div>
 {% endblock %}
@@ -16,7 +19,7 @@
                 <nav id="toc" data-toggle="toc" style="padding-top: 100px;" class="sticky-top d-none d-md-block">
                     <div class="btn-toolbar d-none d-md-block" role="toolbar" style="padding-left: 20px;">
                         <a href="{{ url_for('random_system') }}"><button type="button" class="btn btn-sm btn-warning mr-2 btn-outline-dark shadow-none sidebar-btn">Try It Out</button></a>
-                        <button type="button" class="btn btn-sm btn-warning btn-outline-dark sidebar-btn mt-1 mb-1"><i class="fa-brands fa-github fa-lg"></i> Code</button>
+                        <a href="https://github.com/EthanHargrove/ethanhargrove.com/blob/master/system_generation.py" target="_blank"><button type="button" class="btn btn-sm btn-warning btn-outline-dark sidebar-btn mt-1 mb-1"><i class="fa-brands fa-github fa-lg"></i> Code</button></a>
                     </div>
                 </nav>
             </div>

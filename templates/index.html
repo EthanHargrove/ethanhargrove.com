@@ -59,6 +59,11 @@
                             {{ form.message(class="form-control") }}
                         </div>
                     </div>
+                    <div class="form-row mt-2">
+                        <div class="col-12">
+                            <div class="cf-turnstile" data-sitekey={{ turnstile_site_key }}></div>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="col-12">
                             {{ form.submit(href="#", class="btn btn-primary mt-2 btn-outline-light shadow-none") }}
@@ -73,7 +78,7 @@
                 <br><br>
             </div>
         </div>
-        <div class="col-8 offset-2 col-sm-8 offset-sm-2 col-md-4 offset-md-0 order-md-first">
+        <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-4 offset-md-0 order-md-first">
             <a href="./projects">
                 <div class="card">
                     <div class="card-body">

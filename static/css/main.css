@@ -36,14 +36,6 @@ figcaption .btn {
     background-color: #F5AC29 !important;
 }
 
-.icon-rebound-dark {
-    background-image: url("/static/img/rebound_logo_dark.png") !important;
-    background-size: cover;
-    display: inline-block;
-    height: 15px;
-    width: 15px;
-}
-
 .text-eqn {
     font-size: 16px;
 }
