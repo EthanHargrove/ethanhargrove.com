@@ -28,11 +28,11 @@
         <div class="modal-content" style="background-color: #E5EFEA;">
             <div class="modal-body text-center">
                 <div class="row">
-                    <p>Mobile device detected, for better viewing consider rotating device to landscape position.</p>
+                    <p style="color: #1F2744;">Mobile device detected, for better viewing consider rotating device to landscape position.</p>
                 </div>
                 <button class="btn" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" role="status"></span>
-                    Loading...
+                    <p style="color: #1F2744;">Loading...</p>
                 </button>
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="modal-content" style="background-color: #E5EFEA;">
             <div class="modal-body text-center">
                 <img src="{{ url_for('static', filename='files/loading.gif') }}" class="img-fluid img-rounded"/>
-                <h3>Loading...</h3>
+                <h3 style="color: #1F2744;">Loading...</h3>
             </div>
         </div>
     </div>
@@ -137,12 +137,24 @@
                     <tbody>
                         {% for param in transposed_param %}
                             <tr>
-                                <th scope="row"><div data-toggle="tooltip" data-placement="left" title="{{ parameters[loop.index-1] }}">{{ param_symbols[loop.index-1] }}</div></th>
+                                {% if dark_mode %}
+                                    <th scope="row"><div data-toggle="tooltip" data-placement="left" title="{{ parameters[loop.index-1] }}"><p style="color: #E5EFEA !important;">{{ param_symbols[loop.index-1] }}</p></div></th>
+                                {% else %}
+                                    <th scope="row"><div data-toggle="tooltip" data-placement="left" title="{{ parameters[loop.index-1] }}"><p>{{ param_symbols[loop.index-1] }}</p></div></th>
+                                {% endif %}
                                 {% for body in param %}
                                     {% if body == "0.0" and loop.index == 1 %}
-                                        <td>N/A</td>
+                                        {% if dark_mode %}
+                                            <td><p style="color: #E5EFEA !important;">N/A</p></td>
+                                        {% else %}
+                                            <td>N/A</td>
+                                        {% endif %}
                                     {% else %}
-                                        <td>{{ body }}</td>
+                                        {% if dark_mode %}
+                                            <td><p style="color: #E5EFEA !important;">{{ body }}</p></td>
+                                        {% else %}
+                                            <td><p>{{ body }}</p></td>
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </tr>
