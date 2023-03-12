@@ -2,3 +2,4 @@ __pycache__/
 hidden_info.py
 transit_timing.py
 templates/ttvs.html
+sudoku_solver.py

@@ -56,7 +56,13 @@
                 <div class="media">
                     <div class="row">
                         <div class="col-8 offset-2 col-sm-4 offset-sm-0">
-                            <a href="{{ url_for('random_system') }}"><img class="img-fluid rounded align-self-center" src="{{ url_for('static', filename='img/trappist1.png') }}"></a>
+                            <a href="{{ url_for('random_system') }}">
+                                {% if dark_mode %}
+                                    <img class="img-fluid rounded align-self-center border border-light" src="{{ url_for('static', filename='img/trappist1.png') }}">
+                                {% else %}
+                                    <img class="img-fluid rounded align-self-center" src="{{ url_for('static', filename='img/trappist1.png') }}">
+                                {% endif %}
+                            </a>
                         </div>
                         <div class="media-body col-12 col-sm-8">
                             <a href="{{ url_for('random_system') }}" style="text-decoration: none; color: inherit;">

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+<div class="row row-header">
+    <div class="col-5 col-sm-4 col-md-3 align-items-center align-self-center">
+        <img src="{{ url_for('static', filename='img/sudoku_board.jpg') }}" class="img-fluid rounded border border-light">
+    </div>
+    <div class="col-7 col-sm-8 align-items-center align-self-center">
+        <div class="row">
+            <h1>Sudoku Solver</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-7 col-lg-6 offset-lg-2">
+            <style>
+            table { border-collapse: collapse; font-family: Calibri, sans-serif; }
+            colgroup, tbody { border: solid medium; }
+            td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0; background-color: white; font-size:30px;}
+            @media(max-width: 992px) {
+                td {
+                    height:40px;
+                    width:40px;
+                    font-size: 25px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 768px) {
+                td {
+                    height:30px;
+                    width:30px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 13px;
+                }
+            }
+            @media(max-width: 576px) {
+                td {
+                    height:40px;
+                    width:40px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 498px) {
+                td {
+                    height:30px;
+                    width:30px;
+                    font-size: 17px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            </style>
+            <table>
+                <colgroup><col><col><col>
+                <colgroup><col><col><col>
+                <colgroup><col><col><col>
+                {% for row in puzzle %}
+                    {% if (loop.index0 % 3)==0 %}
+                    <tbody>
+                    {% endif %}
+                    <tr>
+                    {% for digit in row %}
+                        <td>{{ digit }}</td>
+                    {% endfor %}
+                    {% if (loop.index % 3)==0 %}
+                    </tbody>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            <p><a class="btn btn-outline-light shadow-none mt-1" href="{{ url_for('sudoku_solver_page') }}", role="button">Solve Another</a></p>
+        </div>
+        <div class="col-12 col-sm-5 col-lg-4">
+            <p>Determine initial possibilities</p>
+            <p>While puzzle not solved:</p>
+            <p>&emsp; Check for naked singles</p>
+            <p>&emsp; Check for hidden singles</p>
+            <p>&emsp; Check for naked pairs</p>
+            <p>&emsp; Check for hidden pairs</p>
+            <p>&emsp; Check for pointing groups</p>
+            <p>&emsp; Depth-first search</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

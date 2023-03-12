@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+<div class="row row-header">
+    <div class="col-5 col-sm-4 col-md-3 align-items-center align-self-center">
+        <img src="{{ url_for('static', filename='img/sudoku_board.jpg') }}" class="img-fluid rounded border border-light">
+    </div>
+    <div class="col-7 col-sm-8 align-items-center align-self-center">
+        <div class="row">
+            <h1>Sudoku Solver</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-7 col-lg-6 offset-lg-2">
+            <style>
+            table { border-collapse: collapse; font-family: Calibri, sans-serif; }
+            colgroup, tbody { border: solid medium; }
+            td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0; }
+            input { border: none; height: 50px; width: 50px; text-align: center; padding: 0; font-size: 30px;}
+            @media(max-width: 992px) {
+                td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
+                    height:40px;
+                    width:40px;
+                    font-size: 25px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 768px) {
+                td {
+                    height:30px;
+                    width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 13px;
+                }
+            }
+            @media(max-width: 576px) {
+                td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
+                    height:40px;
+                    width:40px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 498px) {
+                td {
+                    height:30px;
+                    width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
+                    font-size: 17px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            </style>
+            <form action="#" method="post" autocomplete="off">
+                <table>
+                    <colgroup><col><col><col>
+                    <colgroup><col><col><col>
+                    <colgroup><col><col><col>
+                    <tbody>
+                        <tr><td><input type="text" maxlength="1" name="r0c0"><td><input type="text" maxlength="1"name="r0c1"><td><input type="text" maxlength="1" name="r0c2"><td><input type="text" maxlength="1" name="r0c3"><td><input type="text" maxlength="1" name="r0c4"><td><input type="text" maxlength="1" name="r0c5"><td><input type="text" maxlength="1" name="r0c6"><td><input type="text" maxlength="1" name="r0c7"><td><input type="text" maxlength="1" name="r0c8">
+                        <tr><td><input type="text" maxlength="1" name="r1c0"><td><input type="text" maxlength="1"name="r1c1"><td><input type="text" maxlength="1" name="r1c2"><td><input type="text" maxlength="1" name="r1c3"><td><input type="text" maxlength="1" name="r1c4"><td><input type="text" maxlength="1" name="r1c5"><td><input type="text" maxlength="1" name="r1c6"><td><input type="text" maxlength="1" name="r1c7"><td><input type="text" maxlength="1" name="r1c8">
+                        <tr><td><input type="text" maxlength="1" name="r2c0"><td><input type="text" maxlength="1"name="r2c1"><td><input type="text" maxlength="1" name="r2c2"><td><input type="text" maxlength="1" name="r2c3"><td><input type="text" maxlength="1" name="r2c4"><td><input type="text" maxlength="1" name="r2c5"><td><input type="text" maxlength="1" name="r2c6"><td><input type="text" maxlength="1" name="r2c7"><td><input type="text" maxlength="1" name="r2c8">
+                    </tbody>
+                    <tbody>
+                        <tr><td><input type="text" maxlength="1" name="r3c0"><td><input type="text" maxlength="1"name="r3c1"><td><input type="text" maxlength="1" name="r3c2"><td><input type="text" maxlength="1" name="r3c3"><td><input type="text" maxlength="1" name="r3c4"><td><input type="text" maxlength="1" name="r3c5"><td><input type="text" maxlength="1" name="r3c6"><td><input type="text" maxlength="1" name="r3c7"><td><input type="text" maxlength="1" name="r3c8">
+                        <tr><td><input type="text" maxlength="1" name="r4c0"><td><input type="text" maxlength="1"name="r4c1"><td><input type="text" maxlength="1" name="r4c2"><td><input type="text" maxlength="1" name="r4c3"><td><input type="text" maxlength="1" name="r4c4"><td><input type="text" maxlength="1" name="r4c5"><td><input type="text" maxlength="1" name="r4c6"><td><input type="text" maxlength="1" name="r4c7"><td><input type="text" maxlength="1" name="r4c8">
+                        <tr><td><input type="text" maxlength="1" name="r5c0"><td><input type="text" maxlength="1"name="r5c1"><td><input type="text" maxlength="1" name="r5c2"><td><input type="text" maxlength="1" name="r5c3"><td><input type="text" maxlength="1" name="r5c4"><td><input type="text" maxlength="1" name="r5c5"><td><input type="text" maxlength="1" name="r5c6"><td><input type="text" maxlength="1" name="r5c7"><td><input type="text" maxlength="1" name="r5c8">
+                    </tbody>
+                    <tbody>
+                        <tr><td><input type="text" maxlength="1" name="r6c0"><td><input type="text" maxlength="1"name="r6c1"><td><input type="text" maxlength="1" name="r6c2"><td><input type="text" maxlength="1" name="r6c3"><td><input type="text" maxlength="1" name="r6c4"><td><input type="text" maxlength="1" name="r6c5"><td><input type="text" maxlength="1" name="r6c6"><td><input type="text" maxlength="1" name="r6c7"><td><input type="text" maxlength="1" name="r6c8">
+                        <tr><td><input type="text" maxlength="1" name="r7c0"><td><input type="text" maxlength="1"name="r7c1"><td><input type="text" maxlength="1" name="r7c2"><td><input type="text" maxlength="1" name="r7c3"><td><input type="text" maxlength="1" name="r7c4"><td><input type="text" maxlength="1" name="r7c5"><td><input type="text" maxlength="1" name="r7c6"><td><input type="text" maxlength="1" name="r7c7"><td><input type="text" maxlength="1" name="r7c8">
+                        <tr><td><input type="text" maxlength="1" name="r8c0"><td><input type="text" maxlength="1"name="r8c1"><td><input type="text" maxlength="1" name="r8c2"><td><input type="text" maxlength="1" name="r8c3"><td><input type="text" maxlength="1" name="r8c4"><td><input type="text" maxlength="1" name="r8c5"><td><input type="text" maxlength="1" name="r8c6"><td><input type="text" maxlength="1" name="r8c7"><td><input type="text" maxlength="1" name="r8c8">
+                    </tbody>
+                </table>
+                <input class="btn btn-warning btn-outline-dark mt-1 mb-1" type="submit" value="Solve" style="width:80px; height:30px; font-size:20px; border-radius:15px; text-align: center; display: inline-block; padding: 0;">
+                <div class="cf-turnstile" data-sitekey={{ turnstile_site_key }}></div>
+            </form>
+        </div>
+        <div class="col-12 col-sm-5 col-lg-4">
+            <p>Determine initial possibilities</p>
+            <p>While puzzle not solved:</p>
+            <p>&emsp; Check for naked singles</p>
+            <p>&emsp; Check for hidden singles</p>
+            <p>&emsp; Check for naked pairs</p>
+            <p>&emsp; Check for hidden pairs</p>
+            <p>&emsp; Check for pointing groups</p>
+            <p>&emsp; Depth-first search</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %} {% endblock %}

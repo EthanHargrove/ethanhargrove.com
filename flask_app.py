@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from flask_mobility import Mobility
 from forms import DesktopRandomSystemForm, MobileRandomSystemForm, ContactForm
-from numpy import transpose, empty
+from numpy import transpose, empty, array
 from rebound import OrbitPlot
 from sigfig import round
 from numpy.random import randint
@@ -12,8 +12,9 @@ from matplotlib import pyplot as plt
 from system_generation import get_star_probs, get_star_mass, generate_system
 from hidden_info import secret_key, email_password, turnstile_site_key, turnstile_secret_key
 from flask_mail import Mail, Message
-from misc_funcs import handle_dark_mode
-
+from misc_funcs import handle_dark_mode, handle_sudoku_input
+import sudoku_solver
+from json import dumps, loads
 
 
 app = Flask(__name__, static_folder='static')
@@ -150,7 +151,7 @@ def random_system():
                     slices_pngImageB64String = "data:image/png;base64,"
                     slices_pngImageB64String += base64.b64encode(slices_pngImage.getvalue()).decode('utf8')
         else:
-            session["dark_mode"] = not session["dark_mode"]
+            handle_dark_mode()
     return render_template("random_system.html", title="Random System Generator", form=form, param_symbols=param_symbols,
     sorted_sys_param=sorted_sys_param, transposed_param=transposed_param_string, parameters=parameters, fancy_image=fancy_pngImageB64String,
     slices_image=slices_pngImageB64String, POST=POST, dark_mode=session["dark_mode"], turnstile_site_key=turnstile_site_key)
@@ -161,6 +162,37 @@ def random_system_explanation():
     handle_dark_mode()
     return render_template("random_system_explanation.html", title="Random System Generator Explained", dark_mode=session["dark_mode"])
 
+@app.route("/sudoku_solver", methods=["GET", "POST"])
+def sudoku_solver_page():
+    if request.method == "POST":
+        turnstile = request.form.get("cf-turnstile-response")
+        if turnstile:
+            url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+            payload = {'secret': turnstile_secret_key, 'response': turnstile, "remoteip": request.remote_addr}
+            r = requests.post(url, data=payload)
+            j = r.json()
+            if j["success"]==True:
+                try:
+                    sudoku_puzzle = handle_sudoku_input()
+                    solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
+                    puzzle_list = [[int(i) for i in row] for row in solved_puzzle]
+                    puzzle_str = dumps(puzzle_list)
+                    return redirect( url_for( "sudoku_solved_page", puzzle=puzzle_str ) )
+                except:
+                    handle_dark_mode()
+        else:
+            handle_dark_mode()
+
+    return render_template("sudoku_solver.html", title="Sudoku Solver", dark_mode=session["dark_mode"], turnstile_site_key=turnstile_site_key)
+
+@app.route("/sudoku_solved", methods=["GET", "POST"])
+def sudoku_solved_page():
+    handle_dark_mode()
+    try:
+        puzzle = loads(request.args["puzzle"])
+        return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], puzzle=puzzle)
+    except:
+        return redirect( url_for( "sudoku_solver_page" ) )
 
 @app.route("/sitemap.xml", methods=["GET"])
 def sitemap():

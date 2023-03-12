@@ -254,3 +254,8 @@ figcaption .btn {
     left: 0 !important;
     top: 1%;
 }
+
+.sudokuCell {
+    padding: 0px;
+    margin-right: -100px !important;
+}
