@@ -17,12 +17,18 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-7 col-lg-6 offset-lg-2">
+            {% if dark_mode %}
             <style>
-            table { border-collapse: collapse; font-family: Calibri, sans-serif; }
-            colgroup, tbody { border: solid medium; }
-            td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0; background-color: white; font-size:30px;}
+            table { border-collapse: collapse; font-family: Calibri, sans-serif;}
+            colgroup, tbody { border: solid medium; color: #808080;}
+            td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0;}
+            input { border: none; height: 50px; width: 50px; text-align: center; padding: 0; font-size: 30px; background-color: white; color: black;}
             @media(max-width: 992px) {
                 td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
                     height:40px;
                     width:40px;
                     font-size: 25px;
@@ -35,6 +41,10 @@
                 td {
                     height:30px;
                     width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
                     font-size: 20px;
                 }
                 p {
@@ -43,6 +53,10 @@
             }
             @media(max-width: 576px) {
                 td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
                     height:40px;
                     width:40px;
                     font-size: 20px;
@@ -55,6 +69,10 @@
                 td {
                     height:30px;
                     width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
                     font-size: 17px;
                 }
                 p {
@@ -62,6 +80,70 @@
                 }
             }
             </style>
+            {% else %}
+            <style>
+            table { border-collapse: collapse; font-family: Calibri, sans-serif; }
+            colgroup, tbody { border: solid medium; }
+            td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0; }
+            input { border: none; height: 50px; width: 50px; text-align: center; padding: 0; font-size: 30px;}
+            @media(max-width: 992px) {
+                td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
+                    height:40px;
+                    width:40px;
+                    font-size: 25px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 768px) {
+                td {
+                    height:30px;
+                    width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 13px;
+                }
+            }
+            @media(max-width: 576px) {
+                td {
+                    height:40px;
+                    width:40px;
+                }
+                input {
+                    height:40px;
+                    width:40px;
+                    font-size: 20px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            @media(max-width: 498px) {
+                td {
+                    height:30px;
+                    width:30px;
+                }
+                input {
+                    height:30px;
+                    width:30px;
+                    font-size: 17px;
+                }
+                p {
+                    font-size: 15px;
+                }
+            }
+            </style>
+            {% endif %}
             <table>
                 <colgroup><col><col><col>
                 <colgroup><col><col><col>
@@ -72,7 +154,7 @@
                     {% endif %}
                     <tr>
                     {% for digit in row %}
-                        <td>{{ digit }}</td>
+                        <td bgcolor="white">{{ digit }}</td>
                     {% endfor %}
                     {% if (loop.index % 3)==0 %}
                     </tbody>
