@@ -3,38 +3,70 @@
 {% block jumbotron %}
 <div class="row row-header">
     <div class="col-5 col-sm-4 col-md-3 align-items-center align-self-center">
-        <img src="{{ url_for('static', filename='img/sudoku_board.jpg') }}" class="img-fluid rounded border border-light">
+        <img src="{{ url_for('static', filename='img/sudoku_puzzle_light.png') }}" class="img-fluid rounded border border-light">
     </div>
     <div class="col-7 col-sm-8 align-items-center align-self-center">
         <div class="row">
-            <h1>Sudoku Solver</h1>
+            <h2>Solved Puzzle</h2>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block body %}
+<body data-spy="scroll" data-target="#toc">
+    <style>
+        @media(min-width: 576px){
+            .container{
+                max-width: 565px;
+            }
+        }
+        @media(min-width: 650px){
+            .container{
+                max-width: 635px;
+            }
+        }
+        @media (min-width: 790px){
+            .container{
+                max-width: 735px;
+            }
+        }
+        @media(min-width: 992px){
+            .container{
+                max-width: 985px;
+            }
+        }
+        @media(min-width: 1200px){
+            .container{
+                max-width: 1145px;
+            }
+        }
+        @media(min-width: 1400px){
+            .container{
+                max-width: 1320px;
+            }
+        }
+    </style>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-sm-7 col-lg-6 offset-lg-2">
+        <div class="col-12 col-sm-4 col-lg-3">
+            <nav id="toc" data-toggle="toc" style="padding-top: 65px;" class="sticky-top d-none d-sm-block"></nav>
+        </div>
+        <div class="col-12 col-sm-8 col-lg-9">
             {% if dark_mode %}
             <style>
             table { border-collapse: collapse; font-family: Calibri, sans-serif;}
             colgroup, tbody { border: solid medium; color: #808080;}
             td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0;}
             input { border: none; height: 50px; width: 50px; text-align: center; padding: 0; font-size: 30px; background-color: white; color: black;}
+            font {font-size: 26px;}
             @media(max-width: 992px) {
                 td {
                     height:40px;
                     width:40px;
                 }
-                input {
-                    height:40px;
-                    width:40px;
+                font {
                     font-size: 25px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             @media(max-width: 768px) {
@@ -42,13 +74,8 @@
                     height:30px;
                     width:30px;
                 }
-                input {
-                    height:30px;
-                    width:30px;
+                font {
                     font-size: 20px;
-                }
-                p {
-                    font-size: 13px;
                 }
             }
             @media(max-width: 576px) {
@@ -56,13 +83,8 @@
                     height:40px;
                     width:40px;
                 }
-                input {
-                    height:40px;
-                    width:40px;
+                font {
                     font-size: 20px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             @media(max-width: 498px) {
@@ -70,13 +92,8 @@
                     height:30px;
                     width:30px;
                 }
-                input {
-                    height:30px;
-                    width:30px;
+                font {
                     font-size: 17px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             </style>
@@ -86,18 +103,14 @@
             colgroup, tbody { border: solid medium; }
             td { border: solid thin; height: 50px; width: 50px; text-align: center; padding: 0; }
             input { border: none; height: 50px; width: 50px; text-align: center; padding: 0; font-size: 30px;}
+            font {font-size: 26px;}
             @media(max-width: 992px) {
                 td {
                     height:40px;
                     width:40px;
                 }
-                input {
-                    height:40px;
-                    width:40px;
+                font {
                     font-size: 25px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             @media(max-width: 768px) {
@@ -105,13 +118,8 @@
                     height:30px;
                     width:30px;
                 }
-                input {
-                    height:30px;
-                    width:30px;
+                font {
                     font-size: 20px;
-                }
-                p {
-                    font-size: 13px;
                 }
             }
             @media(max-width: 576px) {
@@ -119,13 +127,8 @@
                     height:40px;
                     width:40px;
                 }
-                input {
-                    height:40px;
-                    width:40px;
+                font {
                     font-size: 20px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             @media(max-width: 498px) {
@@ -133,13 +136,8 @@
                     height:30px;
                     width:30px;
                 }
-                input {
-                    height:30px;
-                    width:30px;
+                font {
                     font-size: 17px;
-                }
-                p {
-                    font-size: 15px;
                 }
             }
             </style>
@@ -148,13 +146,18 @@
                 <colgroup><col><col><col>
                 <colgroup><col><col><col>
                 <colgroup><col><col><col>
-                {% for row in puzzle %}
+                {% for row in solved_puzzle %}
                     {% if (loop.index0 % 3)==0 %}
                     <tbody>
                     {% endif %}
                     <tr>
+                    {% set rowloop = loop %}
                     {% for digit in row %}
-                        <td bgcolor="white">{{ digit }}</td>
+                        {% if unsolved_puzzle[rowloop.index0][loop.index0]==0 %}
+                            <td bgcolor="white"><font color="blue">{{ digit }}</font></td>
+                        {% else %}
+                            <td bgcolor="white"><font color="black">{{ digit }}</font></td>
+                        {% endif %}
                     {% endfor %}
                     {% if (loop.index % 3)==0 %}
                     </tbody>
@@ -162,16 +165,79 @@
                 {% endfor %}
             </table>
             <p><a class="btn btn-outline-light shadow-none mt-1" href="{{ url_for('sudoku_solver_page') }}", role="button">Solve Another</a></p>
-        </div>
-        <div class="col-12 col-sm-5 col-lg-4">
-            <p>Determine initial possibilities</p>
-            <p>While puzzle not solved:</p>
-            <p>&emsp; Check for naked singles</p>
-            <p>&emsp; Check for hidden singles</p>
-            <p>&emsp; Check for naked pairs</p>
-            <p>&emsp; Check for hidden pairs</p>
-            <p>&emsp; Check for pointing groups</p>
-            <p>&emsp; Depth-first search</p>
+            <hr class="border">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Motivation</h2>
+                        <p>
+                            For my artificial intelligence course we were assigned the problem of implementing an "AI" that can solve any 9x9 sudoku puzzle.
+                            The grading criteria was based on the completeness of our algorithm (its ability to solve any solvable puzzle) and the solving time of its python implementation.
+                            Search algorithms (such as depth-first search) are complete but very inefficient.
+                            There are 9 possible digits for an empty cell, there are 81 cells in a sudoku puzzle, and a puzzle with a single solution must start with at least 17 filled cells.
+                            This gives us \(9^{64}\) ways we could fill in the puzzle, with only one solution.
+                            To make this more efficient, we must consider the constraints on the possibilities of each cell and only explore nodes that are consistent with the constraints.
+                            This can be done using the logic that humans use to solve sudoku puzzles to limit the possible candidates for each cell and fill in any obvious cells.
+                        </p>
+                    </div>
+                </div>
+                <hr class="border">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Constraint Satisfaction</h2>
+                        <p>
+                            We can store the constraints using a dictionary, with each key representing a cell in the puzzle and its value being the set of all possible digits for that cell.
+                            The initial possible digits for a cell are the set of digits 1 to 9, then after looping through the puzzle we can remove the digits that exist in the same row, column, or box as that cell.
+                            If the original puzzle contains two of the same digit in the same row, column, or box, we know the puzzle is not solvable. Also after every update to the possibility dictionary we can check if the updated cell has no possible digits, this would also make a puzzle unsolvable.
+                            Now that we have our initial possibilities, we can use logical methods currently used by human solvers to further constrain the possibilities.
+                        </p>
+                    </div>
+                </div>
+                <hr class="border">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Human Methods</h2>
+                        <h6>Naked Singles</h6>
+                        <p>
+                            A naked single is when there is only one possible digit for a cell.
+                            Since there is only one option for the cell, we can update the puzzle with that digit filled in the cell and remove the digit as a possibility for cells in the same row, column, or box.
+                        </p>
+                        <h6>Hidden Singles</h6>
+                        <p>
+                            A hidden single is when a digit has only one possible cell in a row, column, or box.
+                            Since each row, column, and box must contain one instance of each digit, we can fill in that cell with that digit and remove the digit as a possibility for cells in the same row, column, or box
+                        </p>
+                        <h6>Naked Pairs</h6>
+                        <p>
+                            A naked pair is when two cells in the same row, column, or box have only two possible digits, and they are the same digits.
+                            Those two digits cannot exist in another cell in the row/column/box, so we can remove those digits as possibilities for those cells.
+                        </p>
+                        <h6>Hidden Pairs</h6>
+                        <p>
+                            A hidden pair is when a pair of digits have only the same two possible cells in a row, column, or box.
+                            Thus those two digits must be placed in those two cells and we can remove any other possible digits from those two cells.
+                        </p>
+                        <h6>Pointing Groups</h6>
+                        <p>
+                            A pointing group is when all of a digit’s possible cells within a box are also in the same row or column.
+                            The digit must be placed in that row/column within the box, so we can remove that digit as a possibility from cells in that row/column that are outside the box.
+                        </p>
+                    </div>
+                </div>
+                <hr class="border">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Full Algorithm</h2>
+                        <p>
+                            When solving a sudoku puzzle we first create the possibility dictionary with the initial possibilities.
+                            Then the five human methods are used in order from most to least efficient (naked singles, hidden singles, naked pairs, hidden pairs, pointing groups).
+                            If a method changes any cell’s possibilities, then we start again with the most efficient method; otherwise we try the next most efficient method.
+                            If none of the five methods are able to change any cell’s possibilities, then we choose the cell with the minimum remaining values and explore its possibilities with a backtracking depth-first search.
+                            This is done by looping through each possible digit for that empty cell, making a copy of the puzzle with the digit placed in that cell, and recursively calling the sudoku solver function on that copy.
+                            If none of the digits return a solution, we know that solving the puzzle is impossible.
+                        </p>
+                    </div>
+                </div>
+                <hr class="border">
         </div>
     </div>
 </div>

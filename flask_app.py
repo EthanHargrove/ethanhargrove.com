@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from flask_mobility import Mobility
 from forms import DesktopRandomSystemForm, MobileRandomSystemForm, ContactForm
-from numpy import transpose, empty, array
+from numpy import transpose, empty
 from rebound import OrbitPlot
 from sigfig import round
 from numpy.random import randint
@@ -164,6 +164,8 @@ def random_system_explanation():
 
 @app.route("/sudoku_solver", methods=["GET", "POST"])
 def sudoku_solver_page():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
     if request.method == "POST":
         turnstile = request.form.get("cf-turnstile-response")
         if turnstile:
@@ -174,10 +176,12 @@ def sudoku_solver_page():
             if j["success"]==True:
                 try:
                     sudoku_puzzle = handle_sudoku_input()
-                    solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
-                    puzzle_list = [[int(i) for i in row] for row in solved_puzzle]
+                    puzzle_list = [[int(i) for i in row] for row in sudoku_puzzle]
                     puzzle_str = dumps(puzzle_list)
-                    return redirect( url_for( "sudoku_solved_page", puzzle=puzzle_str ) )
+                    solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
+                    solved_puzzle_list = [[int(i) for i in row] for row in solved_puzzle]
+                    solved_puzzle_str = dumps(solved_puzzle_list)
+                    return redirect( url_for( "sudoku_solved_page", unsolved_puzzle=puzzle_str, solved_puzzle=solved_puzzle_str ) )
                 except:
                     handle_dark_mode()
         else:
@@ -189,8 +193,9 @@ def sudoku_solver_page():
 def sudoku_solved_page():
     handle_dark_mode()
     try:
-        puzzle = loads(request.args["puzzle"])
-        return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], puzzle=puzzle)
+        solved_puzzle = loads(request.args["solved_puzzle"])
+        unsolved_puzzle = loads(request.args["unsolved_puzzle"])
+        return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], solved_puzzle=solved_puzzle, unsolved_puzzle=unsolved_puzzle)
     except:
         return redirect( url_for( "sudoku_solver_page" ) )
 
