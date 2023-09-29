@@ -73,10 +73,10 @@ def projects():
     return render_template("projects.html", title="Projects", dark_mode=session["dark_mode"])
 
 
-@app.route("/transit_timing", methods=["GET", "POST"])
-def ttvs():
-    handle_dark_mode()
-    return render_template("ttvs.html", title="Transit Timing", dark_mode=session["dark_mode"])
+# @app.route("/transit_timing", methods=["GET", "POST"])
+# def ttvs():
+#     handle_dark_mode()
+#     return render_template("ttvs.html", title="Transit Timing", dark_mode=session["dark_mode"])
 
 
 @app.route("/ttv_explanation", methods=["GET", "POST"])
@@ -198,6 +198,7 @@ def sudoku_solved_page():
         return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], solved_puzzle=solved_puzzle, unsolved_puzzle=unsolved_puzzle)
     except:
         return redirect( url_for( "sudoku_solver_page" ) )
+
 
 @app.route("/sitemap.xml", methods=["GET"])
 def sitemap():

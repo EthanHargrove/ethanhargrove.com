@@ -3,7 +3,7 @@
 {% block jumbotron %}
 <div class="row row-header">
     <div class="col-5 col-sm-4 col-md-3 align-items-center align-self-center">
-        <img src="{{ url_for('static', filename='img/grad.jpg') }}" class="img-fluid rounded">
+        <img src="{{ url_for('static', filename='img/grad.jpg') }}" class="img-fluid rounded" height="533" width="533">
     </div>
     <div class="col-7 col-sm-8 col-md-9 align-items-center align-self-center">
         <h1>CV</h1>
@@ -27,6 +27,22 @@
             <div class="modal-body">
                 <div class="embed-responsive embed-responsive-4by3">
                     <embed class="embed-responsive-item" src="{{ url_for('static', filename='files/website_cv.pdf') }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="chineseCert">
+    <div class="modal-dialog modal-lg" role="document" style="min-width:70%; min-height:70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <embed class="embed-responsive-item" src="{{ url_for('static', filename='files/chinese_characters_certificate.pdf') }}">
                 </div>
             </div>
         </div>
@@ -58,6 +74,17 @@
             <h2 class="mt-4">Certificates</h2>
             <hr class="border"/>
             <div class="row">
+                <div class="col-8">
+                    <h5>MANDARIN, DEMYSTIFYING CHINESE CHARACTERS</h5>
+                    <p>University of Bath</p>
+                    <a data-toggle="modal" data-target="#chineseCert" class="d-none d-md-block" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="{{ url_for('static', filename='files/chinese_characters_certificate.pdf') }}" class="d-block d-md-none" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                </div>
+                <div class="col-4">
+                    <h5 class="text-right">9/2023</h5>
+                </div>
+            </div>
+            <div class="row mt-5">
                 <div class="col-8">
                     <h5>CUSTOMISING YOUR MODELS WITH TENSORFLOW 2</h5>
                     <p>Coursera - Imperial College London</p>
