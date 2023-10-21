@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from flask_mobility import Mobility
 from forms import DesktopRandomSystemForm, MobileRandomSystemForm, ContactForm
-from numpy import transpose, empty
+from numpy import transpose, empty, array, zeros
 from rebound import OrbitPlot
 from sigfig import round
 from numpy.random import randint
@@ -12,9 +12,10 @@ from matplotlib import pyplot as plt
 from system_generation import get_star_probs, get_star_mass, generate_system
 from hidden_info import secret_key, email_password, turnstile_site_key, turnstile_secret_key
 from flask_mail import Mail, Message
-from misc_funcs import handle_dark_mode, handle_sudoku_input
+from misc_funcs import handle_dark_mode, handle_grid_input, chess_to_numpy, squares_to_uci
 import sudoku_solver
 from json import dumps, loads
+import chess
 
 
 app = Flask(__name__, static_folder='static')
@@ -175,7 +176,7 @@ def sudoku_solver_page():
             j = r.json()
             if j["success"]==True:
                 try:
-                    sudoku_puzzle = handle_sudoku_input()
+                    sudoku_puzzle = handle_grid_input(9,9)
                     puzzle_list = [[int(i) for i in row] for row in sudoku_puzzle]
                     puzzle_str = dumps(puzzle_list)
                     solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
@@ -189,6 +190,7 @@ def sudoku_solver_page():
 
     return render_template("sudoku_solver.html", title="Sudoku Solver", dark_mode=session["dark_mode"], turnstile_site_key=turnstile_site_key)
 
+
 @app.route("/sudoku_solved", methods=["GET", "POST"])
 def sudoku_solved_page():
     handle_dark_mode()
@@ -198,6 +200,150 @@ def sudoku_solved_page():
         return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], solved_puzzle=solved_puzzle, unsolved_puzzle=unsolved_puzzle)
     except:
         return redirect( url_for( "sudoku_solver_page" ) )
+
+
+@app.route("/chess", methods=["GET", "POST"])
+def chess_start():
+    session["chess_colour"] = None
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        turnstile = request.form.get("cf-turnstile-response")
+        if turnstile:
+            url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+            payload = {'secret': turnstile_secret_key, 'response': turnstile, "remoteip": request.remote_addr}
+            r = requests.post(url, data=payload)
+            j = r.json()
+            if j["success"]==True:
+                form_type = request.form.get("form_type")
+                if form_type == "chess_colour":
+                    session["chess_colour"] = request.form.get("colour")
+                    session["board_fen"] = chess.STARTING_FEN
+                    return redirect( url_for( "chess_move" ) )
+                elif form_type == "dark_mode":
+                    handle_dark_mode()
+        else:
+            form_type = request.form.get("form_type")
+            if form_type == "dark_mode":
+                handle_dark_mode()
+
+    np_board = zeros((8,8), dtype=int)
+
+    return render_template("chess_start.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board, turnstile_site_key=turnstile_site_key)
+
+
+@app.route("/chess_move", methods=["GET", "POST"])
+def chess_move():
+    if "dark_mode" not in session:
+        session["dark_mode"] = False
+    if request.method == "POST":
+        form_type = request.form.get("form_type")
+        if form_type == "dark_mode":
+            handle_dark_mode()
+        elif form_type == "chess_colour":
+          session["chess_colour"] = request.form.get("colour")
+          session["board_fen"] = chess.STARTING_FEN
+          return redirect( url_for( "chess_move" ) )
+        elif form_type == "chess_move":
+            selected_squares = request.form.get("selected_squares").split(',')
+            try:
+                uci_str = squares_to_uci(selected_squares, session["chess_colour"])
+                board = chess.Board(session["board_fen"])
+                _ = board.push_uci(uci_str)
+                session["board_fen"] = board.fen()
+            except ValueError:
+                pass
+    board = chess.Board(session["board_fen"])
+    np_board = chess_to_numpy(board, session["chess_colour"])
+    return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+
+
+# @app.route("/chess_move", methods=["GET", "POST"])
+# def chess_move():
+#     if "dark_mode" not in session:
+#         session["dark_mode"] = False
+#     try:
+#         new_game = loads(request.args["new_game"])
+#         if new_game:
+#             new_game = False
+#             board = chess.Board()
+#             np_board = chess_to_numpy(board, session["chess_colour"])
+#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+#     except:
+#         if request.method == "POST":
+#             form_type = request.form.get("form_type")
+#             print(f"form_type = {form_type}")
+#             if form_type == "chess_colour":
+#                 session["chess_colour"] = request.form.get("colour")
+#                 return redirect( url_for( "chess_move", new_game="True" ) )
+#             elif form_type == "chess_move":
+#                 selected_squares = request.form.get("selected_squares").split(',')
+#             elif form_type == "dark_mode":
+#                 handle_dark_mode()
+#     if request.method == "POST":
+#         form_type = request.form.get("form_type")
+#         print(f"form_type = {form_type}")
+#         if form_type == "chess_colour":
+#             session["chess_colour"] = request.form.get("colour")
+#             return redirect( url_for( "chess_move", new_game="True" ) )
+#         elif form_type == "chess_move":
+#             selected_squares = request.form.get("selected_squares").split(',')
+#         elif form_type == "dark_mode":
+#             handle_dark_mode()
+#     if 'np_board' in globals() or 'np_board' in locals():
+#         return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+#     else:
+#         np_board = array([[-3, -5, -4, -2, -1, -4, -5, -3],
+#                       [-6, -6, -6, -6, -6, -6, -6, -6],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 6,  6,  6,  6,  6,  6,  6,  6],
+#                       [ 3,  5,  4,  2,  1,  4,  5,  3]], dtype=int)
+#         if session["chess_colour"] == "black":
+#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+#         else:
+#             np_board *= -1
+#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+
+#     return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+
+# @app.route("/chess", methods=["GET", "POST"])
+# def chess():
+#     print("chess")
+#     if "dark_mode" not in session:
+#         session["dark_mode"] = False
+#     if "chess_colour" not in session:
+#         session["chess_colour"] = "white"
+
+#     if request.method == "POST":
+#         print("posted")
+#         try:
+#             selected_squares = request.form.get("selected_squares").split(',')
+#             print(f"squares = {selected_squares}")
+#         except:
+#             print("dark")
+#             handle_dark_mode()
+
+
+
+#     if 'board' in globals() or 'board' in locals():
+#         return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+#     else:
+#         np_board = array([[-3, -5, -4, -2, -1, -4, -5, -3],
+#                       [-6, -6, -6, -6, -6, -6, -6, -6],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
+#                       [ 6,  6,  6,  6,  6,  6,  6,  6],
+#                       [ 3,  5,  4,  2,  1,  4,  5,  3]], dtype=int)
+#         if session["chess_colour"] == "black":
+#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+#         else:
+#             board *= -1
+#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
 
 
 @app.route("/sitemap.xml", methods=["GET"])

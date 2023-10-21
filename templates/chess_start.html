@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+
+{% endblock %}
+
+{% block body %}
+<style>
+    {% if dark_mode %}
+        table {
+            border: solid #FFFFFF 1px;
+        }
+    {% else %}
+        table {
+            border: solid #000000 1px;
+        }
+    {% endif %}
+table tr td {
+    height:45px;
+    width:45px;
+    background-color: #f0d9b5;
+}
+table tr:nth-child(odd) td:nth-child(even) {
+    background: #b58863;
+}
+table tr:nth-child(even) td:nth-child(odd) {
+    background:#b58863;
+}
+.highlighted {
+    border: solid #FF6666 4px;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <form action="#" method="post" id="chessForm">
+                <table class="mx-auto">
+                    {% for row in range(8) %}
+                        <tr>
+                            {% for col in range(8) %}
+                                <td id="{{ row }}{{ col }}">
+                                    {% if board[row][col] != 0 %}
+                                        <img src="{{ url_for('static', filename='img/piece' ~ board[row][col]|string ~ '.png') }}" width="100%" height="100%">
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-warning btn-outline-light rounded-circle" name="colour" value="white"><image src={{ url_for('static', filename='img/piece-1.png') }}></button>
+                    <button type="submit" class="btn btn-warning btn-outline-dark rounded-circle" name="colour" value="black"><image src={{ url_for('static', filename='img/piece1.png') }}></button>
+                </div>
+                <div class="cf-turnstile" data-sitekey={{ turnstile_site_key }}></div>
+                <input type="hidden" name="form_type" value="chess_colour">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

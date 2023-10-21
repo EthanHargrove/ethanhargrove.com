@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block jumbotron %}
+
+{% endblock %}
+
+{% block body %}
+<style>
+    {% if dark_mode %}
+        table {
+            border: solid #FFFFFF 1px;
+        }
+    {% else %}
+        table {
+            border: solid #000000 1px;
+        }
+    {% endif %}
+table tr td {
+    height:45px;
+    width:45px;
+    background-color: #f0d9b5;
+}
+table tr:nth-child(odd) td:nth-child(even) {
+    background: #b58863;
+}
+table tr:nth-child(even) td:nth-child(odd) {
+    background:#b58863;
+}
+.highlighted {
+    border: solid #FF6666 4px;
+}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <form action="#" method="post" id="chessForm">
+                <table class="mx-auto">
+                    {% for row in range(8) %}
+                        <tr>
+                            {% for col in range(8) %}
+                                <td id="{{ row }}{{ col }}"  onclick="handleClick({{ row }}, {{ col }});">
+                                    {% if board[row][col] != 0 %}
+                                        <img src="{{ url_for('static', filename='img/piece' ~ board[row][col]|string ~ '.png') }}" width="100%" height="100%">
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <input type="hidden" id="selectedSquaresInput" name="selected_squares">
+                <input type="hidden" name="form_type" value="chess_move">
+            </form>
+            <form action="#" method="post" id="colourForm" class="mt-2">
+                <button type="submit" class="btn btn-warning btn-outline-light rounded-circle" name="colour" value="white"><image src={{ url_for('static', filename='img/piece-1.png') }}></button>
+                <button type="submit" class="btn btn-warning btn-outline-dark rounded-circle" name="colour" value="black"><image src={{ url_for('static', filename='img/piece1.png') }}></button>
+                <input type="hidden" name="form_type" value="chess_colour">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+let selectedSquares = [];
+
+function handleClick(row, col) {
+    let squareNumber = `${row}${col}`;
+    let squareElement = document.getElementById(`${row}${col}`);
+    let hasImage = squareElement.querySelector('img') !== null;
+
+    if (selectedSquares.length == 0) {
+        if (hasImage){
+            selectedSquares.push(squareNumber);
+            squareElement.classList.add('highlighted');
+        }
+    } else{
+        selectedSquares.push(squareNumber);
+        squareElement.classList.add('highlighted');
+    }
+
+    if (selectedSquares.length == 2){
+        var selectedSquaresString = selectedSquares.join(',');
+        document.getElementById('selectedSquaresInput').value = selectedSquaresString
+        document.getElementById('chessForm').submit();
+    }
+}
+</script>
+{% endblock %}

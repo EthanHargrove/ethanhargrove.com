@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/light.css') }}">
     {% endif %}
     <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"/>
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -37,6 +37,7 @@
                         <i class="fa-solid fa-moon"></i>
                     </button>
                 {% endif %}
+                <input type="hidden" name="form_type" value="dark_mode">
             </form>
         {% endif %}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -75,6 +76,7 @@
                         <i class="fa-solid fa-moon"></i>
                     </button>
                 {% endif %}
+                <input type="hidden" name="form_type" value="dark_mode">
             </div>
         </form>
     </div>
