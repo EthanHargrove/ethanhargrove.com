@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import requests
 from flask_mobility import Mobility
 from forms import DesktopRandomSystemForm, MobileRandomSystemForm, ContactForm
-from numpy import transpose, empty, array, zeros
+from numpy import transpose, empty, zeros
 from rebound import OrbitPlot
 from sigfig import round
 from numpy.random import randint
@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 from system_generation import get_star_probs, get_star_mass, generate_system
 from hidden_info import secret_key, email_password, turnstile_site_key, turnstile_secret_key
 from flask_mail import Mail, Message
-from misc_funcs import handle_dark_mode, handle_grid_input, chess_to_numpy, squares_to_uci
+from misc_funcs import handle_grid_input, chess_to_numpy, squares_to_uci, session_handling, generate_random_puzzle
 import sudoku_solver
 from json import dumps, loads
 import chess
@@ -37,53 +37,46 @@ mail = Mail(app)
 def home():
     form = ContactForm()
     message_sent = False
-    if "dark_mode" not in session:
-        session["dark_mode"] = False
     if request.method == "POST":
-        if form.validate_on_submit():
-            name = form.name.data
-            email = form.email.data
-            subject = form.subject.data
-            body = form.message.data
-            turnstile = request.form.get("cf-turnstile-response")
-            if turnstile:
-                url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
-                payload = {'secret': turnstile_secret_key, 'response': turnstile, "remoteip": request.remote_addr}
-                r = requests.post(url, data=payload)
-                j = r.json()
-                if j["success"]==True:
-                    message = Message(subject, sender=app.config["MAIL_USERNAME"], recipients = [app.config["MAIL_USERNAME"]])
-                    message.body = f"name: {name}\nemail: {email}\nmessage: {body}"
-                    mail.send(message)
-                    message_sent = True
-                    form = ContactForm(formdata=None)
-        else:
-            session["dark_mode"] = not session["dark_mode"]
-    return render_template("index.html", title="Home", dark_mode=session["dark_mode"], form=form, message_sent=message_sent, turnstile_site_key=turnstile_site_key)
+        form_type = request.form.get("form_type")
+        if form_type == "contact_me":
+            if form.validate_on_submit():
+                name = form.name.data
+                email = form.email.data
+                subject = form.subject.data
+                body = form.message.data
+                turnstile = request.form.get("cf-turnstile-response")
+                if turnstile:
+                    url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+                    payload = {'secret': turnstile_secret_key, 'response': turnstile, "remoteip": request.remote_addr}
+                    r = requests.post(url, data=payload)
+                    j = r.json()
+                    if j["success"]==True:
+                        message = Message(subject, sender=app.config["MAIL_USERNAME"], recipients = [app.config["MAIL_USERNAME"]])
+                        message.body = f"name: {name}\nemail: {email}\nmessage: {body}"
+                        mail.send(message)
+                        message_sent = True
+                        form = ContactForm(formdata=None)
+    session_handling()
+    return render_template("index.html", title="Home", dark_mode=session["dark_mode"], language=session["language"], form=form, message_sent=message_sent, turnstile_site_key=turnstile_site_key)
 
 
 @app.route("/CV", methods=["GET", "POST"])
 def cv():
-    handle_dark_mode()
-    return render_template("CV.html", title="CV", dark_mode=session["dark_mode"])
+    session_handling()
+    return render_template("CV.html", title="CV", dark_mode=session["dark_mode"], language=session["language"])
 
 
 @app.route("/projects", methods=["GET", "POST"])
 def projects():
-    handle_dark_mode()
-    return render_template("projects.html", title="Projects", dark_mode=session["dark_mode"])
-
-
-# @app.route("/transit_timing", methods=["GET", "POST"])
-# def ttvs():
-#     handle_dark_mode()
-#     return render_template("ttvs.html", title="Transit Timing", dark_mode=session["dark_mode"])
+    session_handling()
+    return render_template("projects.html", title="Projects", dark_mode=session["dark_mode"], language=session["language"])
 
 
 @app.route("/ttv_explanation", methods=["GET", "POST"])
 def ttv_explanation():
-    handle_dark_mode()
-    return render_template("ttv_explanation.html", title="Transit Timing Explained", dark_mode=session["dark_mode"])
+    session_handling()
+    return render_template("ttv_explanation.html", title="Transit Timing Explained", dark_mode=session["dark_mode"], language=session["language"])
 
 
 @app.route("/random_system", methods=["GET", "POST"])
@@ -151,22 +144,21 @@ def random_system():
                     plt.savefig(slices_pngImage, bbox_inches="tight", backend="agg", facecolor="#E5EFEA")
                     slices_pngImageB64String = "data:image/png;base64,"
                     slices_pngImageB64String += base64.b64encode(slices_pngImage.getvalue()).decode('utf8')
-        else:
-            handle_dark_mode()
+    session_handling()
     return render_template("random_system.html", title="Random System Generator", form=form, param_symbols=param_symbols,
     sorted_sys_param=sorted_sys_param, transposed_param=transposed_param_string, parameters=parameters, fancy_image=fancy_pngImageB64String,
-    slices_image=slices_pngImageB64String, POST=POST, dark_mode=session["dark_mode"], turnstile_site_key=turnstile_site_key)
+    slices_image=slices_pngImageB64String, POST=POST, dark_mode=session["dark_mode"], language=session["language"], turnstile_site_key=turnstile_site_key)
 
 
 @app.route("/random_system_explanation", methods=["GET", "POST"])
 def random_system_explanation():
-    handle_dark_mode()
-    return render_template("random_system_explanation.html", title="Random System Generator Explained", dark_mode=session["dark_mode"])
+    session_handling()
+    return render_template("random_system_explanation.html", title="Random System Generator Explained", dark_mode=session["dark_mode"], language=session["language"])
+
 
 @app.route("/sudoku_solver", methods=["GET", "POST"])
 def sudoku_solver_page():
-    if "dark_mode" not in session:
-        session["dark_mode"] = False
+    default_puzzle = [["" for _ in range(9)] for _ in range(9)]
     if request.method == "POST":
         turnstile = request.form.get("cf-turnstile-response")
         if turnstile:
@@ -176,28 +168,32 @@ def sudoku_solver_page():
             j = r.json()
             if j["success"]==True:
                 try:
-                    sudoku_puzzle = handle_grid_input(9,9)
-                    puzzle_list = [[int(i) for i in row] for row in sudoku_puzzle]
-                    puzzle_str = dumps(puzzle_list)
-                    solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
-                    solved_puzzle_list = [[int(i) for i in row] for row in solved_puzzle]
-                    solved_puzzle_str = dumps(solved_puzzle_list)
-                    return redirect( url_for( "sudoku_solved_page", unsolved_puzzle=puzzle_str, solved_puzzle=solved_puzzle_str ) )
+                    form_type = request.form.get("form_type")
+                    if form_type=="Solve":
+                        sudoku_puzzle = handle_grid_input(9,9)
+                        puzzle_list = [[int(i) for i in row] for row in sudoku_puzzle]
+                        puzzle_str = dumps(puzzle_list)
+                        solved_puzzle = sudoku_solver.sudoku_solver(sudoku_puzzle)
+                        solved_puzzle_list = [[int(i) for i in row] for row in solved_puzzle]
+                        solved_puzzle_str = dumps(solved_puzzle_list)
+                        return redirect( url_for( "sudoku_solved_page", unsolved_puzzle=puzzle_str, solved_puzzle=solved_puzzle_str ) )
+                    elif form_type=="Random Puzzle":
+                        default_puzzle = generate_random_puzzle()
                 except:
-                    handle_dark_mode()
-        else:
-            handle_dark_mode()
+                    pass
 
-    return render_template("sudoku_solver.html", title="Sudoku Solver", dark_mode=session["dark_mode"], turnstile_site_key=turnstile_site_key)
+    session_handling()
+
+    return render_template("sudoku_solver.html", title="Sudoku Solver", dark_mode=session["dark_mode"], language=session["language"], turnstile_site_key=turnstile_site_key, default_puzzle=default_puzzle)
 
 
 @app.route("/sudoku_solved", methods=["GET", "POST"])
 def sudoku_solved_page():
-    handle_dark_mode()
+    session_handling()
     try:
         solved_puzzle = loads(request.args["solved_puzzle"])
         unsolved_puzzle = loads(request.args["unsolved_puzzle"])
-        return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], solved_puzzle=solved_puzzle, unsolved_puzzle=unsolved_puzzle)
+        return render_template("sudoku_solved.html", title="Sudoku Solver", dark_mode=session["dark_mode"], language=session["language"], solved_puzzle=solved_puzzle, unsolved_puzzle=unsolved_puzzle)
     except:
         return redirect( url_for( "sudoku_solver_page" ) )
 
@@ -205,8 +201,6 @@ def sudoku_solved_page():
 @app.route("/chess", methods=["GET", "POST"])
 def chess_start():
     session["chess_colour"] = None
-    if "dark_mode" not in session:
-        session["dark_mode"] = False
     if request.method == "POST":
         turnstile = request.form.get("cf-turnstile-response")
         if turnstile:
@@ -220,27 +214,19 @@ def chess_start():
                     session["chess_colour"] = request.form.get("colour")
                     session["board_fen"] = chess.STARTING_FEN
                     return redirect( url_for( "chess_move" ) )
-                elif form_type == "dark_mode":
-                    handle_dark_mode()
-        else:
-            form_type = request.form.get("form_type")
-            if form_type == "dark_mode":
-                handle_dark_mode()
 
+    session_handling()
     np_board = zeros((8,8), dtype=int)
 
-    return render_template("chess_start.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board, turnstile_site_key=turnstile_site_key)
+    return render_template("chess_start.html", title="Chess", dark_mode=session["dark_mode"], language=session["language"], chess_colour=session["chess_colour"], board=np_board, turnstile_site_key=turnstile_site_key)
 
 
 @app.route("/chess_move", methods=["GET", "POST"])
 def chess_move():
-    if "dark_mode" not in session:
-        session["dark_mode"] = False
+    session_handling()
     if request.method == "POST":
         form_type = request.form.get("form_type")
-        if form_type == "dark_mode":
-            handle_dark_mode()
-        elif form_type == "chess_colour":
+        if form_type == "chess_colour":
           session["chess_colour"] = request.form.get("colour")
           session["board_fen"] = chess.STARTING_FEN
           return redirect( url_for( "chess_move" ) )
@@ -255,95 +241,7 @@ def chess_move():
                 pass
     board = chess.Board(session["board_fen"])
     np_board = chess_to_numpy(board, session["chess_colour"])
-    return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-
-
-# @app.route("/chess_move", methods=["GET", "POST"])
-# def chess_move():
-#     if "dark_mode" not in session:
-#         session["dark_mode"] = False
-#     try:
-#         new_game = loads(request.args["new_game"])
-#         if new_game:
-#             new_game = False
-#             board = chess.Board()
-#             np_board = chess_to_numpy(board, session["chess_colour"])
-#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-#     except:
-#         if request.method == "POST":
-#             form_type = request.form.get("form_type")
-#             print(f"form_type = {form_type}")
-#             if form_type == "chess_colour":
-#                 session["chess_colour"] = request.form.get("colour")
-#                 return redirect( url_for( "chess_move", new_game="True" ) )
-#             elif form_type == "chess_move":
-#                 selected_squares = request.form.get("selected_squares").split(',')
-#             elif form_type == "dark_mode":
-#                 handle_dark_mode()
-#     if request.method == "POST":
-#         form_type = request.form.get("form_type")
-#         print(f"form_type = {form_type}")
-#         if form_type == "chess_colour":
-#             session["chess_colour"] = request.form.get("colour")
-#             return redirect( url_for( "chess_move", new_game="True" ) )
-#         elif form_type == "chess_move":
-#             selected_squares = request.form.get("selected_squares").split(',')
-#         elif form_type == "dark_mode":
-#             handle_dark_mode()
-#     if 'np_board' in globals() or 'np_board' in locals():
-#         return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-#     else:
-#         np_board = array([[-3, -5, -4, -2, -1, -4, -5, -3],
-#                       [-6, -6, -6, -6, -6, -6, -6, -6],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 6,  6,  6,  6,  6,  6,  6,  6],
-#                       [ 3,  5,  4,  2,  1,  4,  5,  3]], dtype=int)
-#         if session["chess_colour"] == "black":
-#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-#         else:
-#             np_board *= -1
-#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-
-#     return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-
-# @app.route("/chess", methods=["GET", "POST"])
-# def chess():
-#     print("chess")
-#     if "dark_mode" not in session:
-#         session["dark_mode"] = False
-#     if "chess_colour" not in session:
-#         session["chess_colour"] = "white"
-
-#     if request.method == "POST":
-#         print("posted")
-#         try:
-#             selected_squares = request.form.get("selected_squares").split(',')
-#             print(f"squares = {selected_squares}")
-#         except:
-#             print("dark")
-#             handle_dark_mode()
-
-
-
-#     if 'board' in globals() or 'board' in locals():
-#         return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-#     else:
-#         np_board = array([[-3, -5, -4, -2, -1, -4, -5, -3],
-#                       [-6, -6, -6, -6, -6, -6, -6, -6],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 0,  0,  0,  0,  0,  0,  0,  0],
-#                       [ 6,  6,  6,  6,  6,  6,  6,  6],
-#                       [ 3,  5,  4,  2,  1,  4,  5,  3]], dtype=int)
-#         if session["chess_colour"] == "black":
-#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
-#         else:
-#             board *= -1
-#             return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], chess_colour=session["chess_colour"], board=np_board)
+    return render_template("chess.html", title="Chess", dark_mode=session["dark_mode"], language=session["language"], chess_colour=session["chess_colour"], board=np_board)
 
 
 @app.route("/sitemap.xml", methods=["GET"])

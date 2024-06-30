@@ -3,7 +3,11 @@
 {% block jumbotron %}
     <div class="row row-header">
         <div class="col-12 col-sm-6">
+            {% if language == "english" %}
             <h1>Projects</h1>
+            {% elif language == "chinese" %}
+            <h1>项目</h1>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -12,6 +16,44 @@
 {% block body %}
 <div class="container">
     <div class="mr-4">
+        <!--<hr class="border" />-->
+        <!--<div class="row">-->
+        <!--    <div class="col-12 col-lg-8">-->
+        <!--        <div class="media">-->
+        <!--            <div class="row">-->
+        <!--                <div class="col-8 offset-2 col-sm-4 offset-sm-0">-->
+        <!--                    <a href="{{ url_for('chess_start') }}">-->
+        <!--                        {% if dark_mode %}-->
+        <!--                            <img class="img-fluid rounded align-self-center border border-light" src="{{ url_for('static', filename='img/robot_magnus.png') }}" width="578" height="578">-->
+        <!--                        {% else %}-->
+        <!--                            <img class="img-fluid rounded align-self-center border border-dark" src="{{ url_for('static', filename='img/robot_magnus.png') }}" width="578" height="578">-->
+        <!--                        {% endif %}-->
+        <!--                    </a>-->
+        <!--                </div>-->
+        <!--                <div class="media-body col-12 col-sm-8">-->
+        <!--                    <a href="{{ url_for('chess_start') }}" style="text-decoration: none; color: inherit;">-->
+        <!--                        <div class="d-flex justify-content-center justify-content-sm-start mt-2 mt-sm-0">-->
+        <!--                            <h5>Chess Bot</h5>-->
+        <!--                        </div>-->
+        <!--                    </a>-->
+        <!--                    <p class="text-center text-sm-left">A chess bot trained using Imitation Learning on Grandmaster Magnus Carlsen's Lichess games.</p>-->
+        <!--                    <div class="btn-toolbar d-none d-sm-flex" role="toolbar">-->
+        <!--                        <a href="{{ url_for('chess_start') }}"><button type="button" class="btn btn-warning mr-2 btn-outline-dark shadow-none">Try It Out</button></a>-->
+                                <!--<a href="{{ url_for('random_system_explanation') }}"><button type="button" class="btn btn-warning mr-2 btn-outline-dark shadow-none">Explanation</button></a>-->
+                                <!--<a href="https://github.com/EthanHargrove/ethanhargrove.com/blob/master/system_generation.py" target="_blank"><button type="button" class="btn btn-warning btn-outline-dark"><i class="fa-brands fa-github fa-lg"></i> Code</button></a>-->
+        <!--                    </div>-->
+        <!--                    <div class="d-flex justify-content-center">-->
+        <!--                        <div class="btn-group d-sm-none center">-->
+        <!--                            <a href="{{ url_for('chess_start') }}"><button type="button" class="btn btn-warning btn-outline-dark shadow-none">Try It Out</button></a>-->
+                                    <!--<a href="{{ url_for('random_system_explanation') }}"><button type="button" class="btn btn-warning btn-outline-dark shadow-none" style="border-radius: 0px">Explanation</button></a>-->
+                                    <!--<a href="https://github.com/EthanHargrove/ethanhargrove.com/blob/master/system_generation.py" target="_blank"><button type="button" class="btn btn-warning btn-outline-dark shadow-none" style="border-radius: 0px 20px 20px 0px;"><i class="fa-brands fa-github fa-lg"></i> Code</button></a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</div>-->
         <hr class="border"/>
         <div class="row">
             <div class="col-12 col-lg-8">

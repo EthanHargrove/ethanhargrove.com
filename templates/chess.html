@@ -50,6 +50,7 @@ table tr:nth-child(even) td:nth-child(odd) {
                 <input type="hidden" id="selectedSquaresInput" name="selected_squares">
                 <input type="hidden" name="form_type" value="chess_move">
             </form>
+            <h3 class="mt-5">New Game</h3>
             <form action="#" method="post" id="colourForm" class="mt-2">
                 <button type="submit" class="btn btn-warning btn-outline-light rounded-circle" name="colour" value="white"><image src={{ url_for('static', filename='img/piece-1.png') }}></button>
                 <button type="submit" class="btn btn-warning btn-outline-dark rounded-circle" name="colour" value="black"><image src={{ url_for('static', filename='img/piece1.png') }}></button>

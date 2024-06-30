@@ -68,6 +68,14 @@ figcaption .btn {
     font-size: 24px;
 }
 
+#langDiv {
+    padding-left: 95% !important;
+    /*padding-bottom: 15px !important;*/
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    bottom: 0;
+}
+
 #darkDiv {
     padding-left: 95% !important;
     padding-bottom: 10px !important;
@@ -104,6 +112,9 @@ figcaption .btn {
     #darkDiv {
         padding-left: 94% !important;
     }
+    #langDiv {
+        padding-left: 94% !important;
+    }
 }
 
 @media(max-width: 900px) {
@@ -132,6 +143,9 @@ figcaption .btn {
         font-size: 18px;
     }
     #darkDiv {
+        padding-left: 93% !important;
+    }
+    #langDiv {
         padding-left: 93% !important;
     }
 }
@@ -164,6 +178,9 @@ figcaption .btn {
     #darkDiv {
         padding-left: 91% !important;
     }
+    #langDiv {
+        padding-left: 91% !important;
+    }
 }
 
 @media(max-width: 576px) {
@@ -194,6 +211,9 @@ figcaption .btn {
     #darkDiv {
         padding-left: 91% !important;
     }
+    #langDiv {
+        padding-left: 91% !important;
+    }
 }
 
 @media(max-width: 498px) {
@@ -222,6 +242,9 @@ figcaption .btn {
         font-size: 14px;
     }
     #darkDiv {
+        padding-left: 90% !important;
+    }
+    #langDiv {
         padding-left: 90% !important;
     }
 }

@@ -36,3 +36,19 @@ p .btn {
     background-color: #1F2744;
     color: #E5EFEA;
 }
+
+
+#toggleLang {
+    background-color: #E5EFEA;
+    color: #1F2744;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    font-size: 25px;
+    transition: all .3s;
+}
+
+#toggleLang:hover {
+    background-color: #1F2744;
+    color: #E5EFEA;
+}

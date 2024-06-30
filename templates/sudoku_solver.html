@@ -47,12 +47,12 @@
             }
         }
     </style>
-    <div class="container" style="margin-left: 5px;">
+    <div class="container">
         <div class="row">
             <div class="col-12 col-sm-4 col-lg-3">
                 <nav id="toc" data-toggle="toc" style="padding-top: 65px;" class="sticky-top d-none d-sm-block"></nav>
             </div>
-            <div class="col-12 col-sm-8 col-lg-9">
+            <div class="col-12 col-sm-8 col-lg-9 justify-content-center">
                 {% if dark_mode %}
                 <style>
                 table { border-collapse: collapse; font-family: Calibri, sans-serif;}
@@ -185,23 +185,26 @@
                         <colgroup><col><col><col>
                         <colgroup><col><col><col>
                         <colgroup><col><col><col>
-                        <tbody>
-                            <tr><td><input type="text" maxlength="1" name="r0c0"><td><input type="text" maxlength="1"name="r0c1"><td><input type="text" maxlength="1" name="r0c2"><td><input type="text" maxlength="1" name="r0c3"><td><input type="text" maxlength="1" name="r0c4"><td><input type="text" maxlength="1" name="r0c5"><td><input type="text" maxlength="1" name="r0c6"><td><input type="text" maxlength="1" name="r0c7"><td><input type="text" maxlength="1" name="r0c8">
-                            <tr><td><input type="text" maxlength="1" name="r1c0"><td><input type="text" maxlength="1"name="r1c1"><td><input type="text" maxlength="1" name="r1c2"><td><input type="text" maxlength="1" name="r1c3"><td><input type="text" maxlength="1" name="r1c4"><td><input type="text" maxlength="1" name="r1c5"><td><input type="text" maxlength="1" name="r1c6"><td><input type="text" maxlength="1" name="r1c7"><td><input type="text" maxlength="1" name="r1c8">
-                            <tr><td><input type="text" maxlength="1" name="r2c0"><td><input type="text" maxlength="1"name="r2c1"><td><input type="text" maxlength="1" name="r2c2"><td><input type="text" maxlength="1" name="r2c3"><td><input type="text" maxlength="1" name="r2c4"><td><input type="text" maxlength="1" name="r2c5"><td><input type="text" maxlength="1" name="r2c6"><td><input type="text" maxlength="1" name="r2c7"><td><input type="text" maxlength="1" name="r2c8">
-                        </tbody>
-                        <tbody>
-                            <tr><td><input type="text" maxlength="1" name="r3c0"><td><input type="text" maxlength="1"name="r3c1"><td><input type="text" maxlength="1" name="r3c2"><td><input type="text" maxlength="1" name="r3c3"><td><input type="text" maxlength="1" name="r3c4"><td><input type="text" maxlength="1" name="r3c5"><td><input type="text" maxlength="1" name="r3c6"><td><input type="text" maxlength="1" name="r3c7"><td><input type="text" maxlength="1" name="r3c8">
-                            <tr><td><input type="text" maxlength="1" name="r4c0"><td><input type="text" maxlength="1"name="r4c1"><td><input type="text" maxlength="1" name="r4c2"><td><input type="text" maxlength="1" name="r4c3"><td><input type="text" maxlength="1" name="r4c4"><td><input type="text" maxlength="1" name="r4c5"><td><input type="text" maxlength="1" name="r4c6"><td><input type="text" maxlength="1" name="r4c7"><td><input type="text" maxlength="1" name="r4c8">
-                            <tr><td><input type="text" maxlength="1" name="r5c0"><td><input type="text" maxlength="1"name="r5c1"><td><input type="text" maxlength="1" name="r5c2"><td><input type="text" maxlength="1" name="r5c3"><td><input type="text" maxlength="1" name="r5c4"><td><input type="text" maxlength="1" name="r5c5"><td><input type="text" maxlength="1" name="r5c6"><td><input type="text" maxlength="1" name="r5c7"><td><input type="text" maxlength="1" name="r5c8">
-                        </tbody>
-                        <tbody>
-                            <tr><td><input type="text" maxlength="1" name="r6c0"><td><input type="text" maxlength="1"name="r6c1"><td><input type="text" maxlength="1" name="r6c2"><td><input type="text" maxlength="1" name="r6c3"><td><input type="text" maxlength="1" name="r6c4"><td><input type="text" maxlength="1" name="r6c5"><td><input type="text" maxlength="1" name="r6c6"><td><input type="text" maxlength="1" name="r6c7"><td><input type="text" maxlength="1" name="r6c8">
-                            <tr><td><input type="text" maxlength="1" name="r7c0"><td><input type="text" maxlength="1"name="r7c1"><td><input type="text" maxlength="1" name="r7c2"><td><input type="text" maxlength="1" name="r7c3"><td><input type="text" maxlength="1" name="r7c4"><td><input type="text" maxlength="1" name="r7c5"><td><input type="text" maxlength="1" name="r7c6"><td><input type="text" maxlength="1" name="r7c7"><td><input type="text" maxlength="1" name="r7c8">
-                            <tr><td><input type="text" maxlength="1" name="r8c0"><td><input type="text" maxlength="1"name="r8c1"><td><input type="text" maxlength="1" name="r8c2"><td><input type="text" maxlength="1" name="r8c3"><td><input type="text" maxlength="1" name="r8c4"><td><input type="text" maxlength="1" name="r8c5"><td><input type="text" maxlength="1" name="r8c6"><td><input type="text" maxlength="1" name="r8c7"><td><input type="text" maxlength="1" name="r8c8">
-                        </tbody>
+                        {% for row in default_puzzle %}
+                            {% if (loop.index0 % 3)==0 %}
+                            <tbody>
+                            {% endif %}
+                            <tr>
+                            {% set rowloop = loop %}
+                            {% for digit in row %}
+                                <!--<td><input type="text" maxlength="1" name={{ "r"+ rowloop.index0|string + "c" + loop.index0|string }} value={{ "r"+ rowloop.index0|string + "c" + loop.index0|string }}></td>-->
+                                <td><input type="text" maxlength="1" name={{ "r"+ rowloop.index0|string + "c" + loop.index0|string }} value={{ digit }}></td>
+                            {% endfor %}
+                            {% if (loop.index % 3)==0 %}
+                            </tbody>
+                            {% endif %}
+                        {% endfor %}
                     </table>
-                    <input class="btn btn-warning btn-outline-dark mt-1 mb-1" type="submit" value="Solve" style="width:80px; height:30px; font-size:20px; border-radius:15px; text-align: center; display: inline-block; padding: 0;">
+                    <div class="btn-toolbar d-none d-sm-flex" role="toolbar">
+                        <input class="btn btn-warning btn-outline-dark mt-1 mb-1" type="submit" name="form_type" value="Solve" style="width:80px; height:30px; font-size:20px; border-radius:15px; text-align: center; display: inline-block; padding: 0;">
+                        <input class="btn btn-warning btn-outline-dark mt-1 mb-1" type="submit" name="form_type" value="Random Puzzle" style="width:80px; height:30px; font-size:10px; border-radius:15px; text-align: center; display: inline-block; padding: 0;">
+                    </div>
+                    <!--<input class="btn btn-warning btn-outline-dark mt-1 mb-1" type="submit" name="form_type" value="solve" style="width:80px; height:30px; font-size:20px; border-radius:15px; text-align: center; display: inline-block; padding: 0;">-->
                     <div class="cf-turnstile" data-sitekey={{ turnstile_site_key }}></div>
                 </form>
                 <hr class="border">

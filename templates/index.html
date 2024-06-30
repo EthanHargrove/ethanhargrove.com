@@ -8,8 +8,9 @@
       </div>
       <div class="col-6 col-sm-8 col-md-9 align-items-center align-self-center">
         <h1>Ethan Hargrove</h1>
-        <p class="d-none d-sm-flex">University of Bath - MSc Computer Science</p>
-        <p class="d-none d-sm-flex">University of Toronto - HBSc Planetary Science</p>
+        <p>Data Science | Machine Learning | Reinforcement Learning</p>
+        <!--<p class="d-none d-sm-flex">University of Bath - MSc Computer Science</p>-->
+        <!--<p class="d-none d-sm-flex">University of Toronto - HBSc Planetary Science</p>-->
       </div>
     </div>
 </div>
@@ -72,6 +73,7 @@
                             {% endif %}
                         </div>
                     </div>
+                    <input type="hidden" name="form_type" value="contact_me">
                 </form>
             </div>
             <div class="row" id="contactForm">
@@ -100,4 +102,5 @@
     </div>
 </div>
 {% endblock %}
-{% block script %} {% endblock %}
+{% block script %}
+{% endblock %}

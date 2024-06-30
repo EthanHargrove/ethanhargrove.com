@@ -29,11 +29,49 @@ table tr:nth-child(even) td:nth-child(odd) {
 .highlighted {
     border: solid #FF6666 4px;
 }
+
+.opponent-button-dark img {
+    border: 3px solid rgba(0,0,0,0);
+}
+.opponent-button-dark:hover img {
+    border: 3px solid #ffffff; /* Change the border color as needed */
+}
+.opponent-button-dark:focus,
+.opponent-button-dark:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.opponent-button-dark-active img {
+    border: 3px solid #ffffff; /* Change the border color as needed */
+}
+
+.opponent-button-light img {
+    border: 3px solid rgba(0,0,0,0);
+}
+.opponent-button-light:hover img {
+    border: 3px solid #000000; /* Change the border color as needed */
+}
+.opponent-button-light:focus,
+.opponent-button-light:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.opponent-button-light-active img {
+    border: 3px solid #000000; /* Change the border color as needed */
+}
 </style>
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
-            <form action="#" method="post" id="chessForm">
+            <form action="#" method="post" id="chessStartForm">
+                <div class="mt-2 mb-2">
+                    <input type="hidden" id="opponentInput" name="opponent">
+                    {% if dark_mode %}
+                    <button type="button" class="btn rounded-circle opponent-button-dark" onclick="setOpponent('Magnus');" style:"background: transparent !important;" id="magnusButtonDark"><image class="rounded-circle" src={{ url_for('static', filename='img/robot_magnus_mini.png') }}></button>
+                    {% else %}
+                    <button type="button" class="btn rounded-circle opponent-button-light" onclick="setOpponent('Magnus');" style:"background: transparent !important;" id="magnusButtonLight"><image class="rounded-circle" src={{ url_for('static', filename='img/robot_magnus_mini.png') }}></button>
+                    {% endif %}
+                </div>
                 <table class="mx-auto">
                     {% for row in range(8) %}
                         <tr>
@@ -47,9 +85,10 @@ table tr:nth-child(even) td:nth-child(odd) {
                         </tr>
                     {% endfor %}
                 </table>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-warning btn-outline-light rounded-circle" name="colour" value="white"><image src={{ url_for('static', filename='img/piece-1.png') }}></button>
-                    <button type="submit" class="btn btn-warning btn-outline-dark rounded-circle" name="colour" value="black"><image src={{ url_for('static', filename='img/piece1.png') }}></button>
+                <div class="mt-2 mb-2">
+                    <input type="hidden" id="colourInput" name="colour">
+                    <button type="button" class="btn btn-warning btn-outline-light rounded-circle" onclick="setColour('white');" id="whiteColour"><image src={{ url_for('static', filename='img/piece-1.png') }}></button>
+                    <button type="button" class="btn btn-warning btn-outline-dark rounded-circle" onclick="setColour('black');" id="blackColour"><image src={{ url_for('static', filename='img/piece1.png') }}></button>
                 </div>
                 <div class="cf-turnstile" data-sitekey={{ turnstile_site_key }}></div>
                 <input type="hidden" name="form_type" value="chess_colour">
@@ -60,4 +99,43 @@ table tr:nth-child(even) td:nth-child(odd) {
 {% endblock %}
 
 {% block script %}
+<script>
+let colour = null;
+let opponent = null;
+
+function setOpponent(name) {
+    opponent = name;
+
+    if (colour !== null && opponent !== null){
+        document.getElementById('colourInput').value = colour;
+        document.getElementById('opponentInput').value = opponent;
+        document.getElementById('chessStartForm').submit();
+    }
+}
+
+function setColour(chosenColour) {
+    colour = chosenColour
+
+    if (colour !== null && opponent !== null){
+        document.getElementById('colourInput').value = colour;
+        document.getElementById('opponentInput').value = opponent;
+        document.getElementById('chessStartForm').submit();
+    }
+}
+
+$(document).ready(function(){
+    $("#magnusButtonDark").click(function(){
+        $(this).toggleClass("opponent-button-dark-active");
+    });
+    $("#magnusButtonLight").click(function(){
+        $(this).toggleClass("opponent-button-light-active");
+    });
+    $("#whiteColour").click(function(){
+        $(this).toggleClass("active");
+    });
+    $("#blackColour").click(function(){
+        $(this).toggleClass("active");
+    });
+});
+</script>
 {% endblock %}

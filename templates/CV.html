@@ -6,9 +6,17 @@
         <img src="{{ url_for('static', filename='img/grad.jpg') }}" class="img-fluid rounded" height="533" width="533">
     </div>
     <div class="col-7 col-sm-8 col-md-9 align-items-center align-self-center">
+        {% if language == "english" %}
         <h1>CV</h1>
+        {% elif language == "chinese" %}
+        <h1>简历</h1>
+        {% endif %}
         <button type="button" class="btn btn-danger btn-lg d-none d-md-block btn-outline-light shadow-none" data-toggle="modal" data-target="#myCV">
+            {% if language == "english" %}
             View as PDF
+            {% elif language == "chinese" %}
+            以 PDF 格式查看
+            {% endif %}
         </button>
         <a href="{{ url_for('static', filename='files/website_cv.pdf') }}" target="_blank"><button type="button" class="btn btn-danger d-md-none btn-outline-light shadow-none">View as PDF</button></a>
     </div>
@@ -51,7 +59,35 @@
 <div class="container-lg">
     <div class="row">
         <div class="col-12">
-            <h2>Education</h2>
+            {% if language == "english" %}
+                <h2>Work Experience</h2>
+            {% elif language == "chinese" %}
+                <h2>工作经历</h2>
+            {% endif %}
+            <hr class="border"/>
+            <div class="row">
+                <div class="col-7">
+                    {% if language == "english" %}
+                    <h5>DATA SCIENTIST</h5>
+                    <p>University of Exeter</p>
+                    {% elif language == "chinese" %}
+                    <h4>数据科学家</h4>
+                    <p>埃克塞特大学</p>
+                    {% endif %}
+                </div>
+                <div class="col-5">
+                    {% if language == "english" %}
+                    <h5 class="text-right">&zwj;09/2023 - PRESENT</h5>
+                    {% elif language == "chinese" %}
+                    <h5 class="text-right">&zwj;09/2023 - 至今</h5>
+                    {% endif %}
+                </div>
+            </div>
+            {% if language == "english" %}
+            <h2 class="mt-4">Education</h2>
+            {% elif language == "chinese" %}
+            <h2>教育背景</h2>
+            {% endif %}
             <hr class="border"/>
             <div class="row">
                 <div class="col-7">
@@ -59,7 +95,7 @@
                     <p>MSc Computer Science</p>
                 </div>
                 <div class="col-5">
-                    <h5 class="text-right">&zwj;10/2022 - 10/2023</h5>
+                    <h5 class="text-right">&zwj;10/2022 - 9/2023</h5>
                 </div>
             </div>
             <div class="row">
@@ -75,10 +111,20 @@
             <hr class="border"/>
             <div class="row">
                 <div class="col-8">
+                    <h5>CHINESE CHARACTERS FOR BEGINNERS 汉字</h5>
+                    <p>Coursera - Peking University</p>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/W2QA3HV7RRFR" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
+                </div>
+                <div class="col-4">
+                    <h5 class="text-right">11/2023</h5>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-8">
                     <h5>MANDARIN, DEMYSTIFYING CHINESE CHARACTERS</h5>
                     <p>University of Bath</p>
-                    <a data-toggle="modal" data-target="#chineseCert" class="d-none d-md-block" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
-                    <a href="{{ url_for('static', filename='files/chinese_characters_certificate.pdf') }}" class="d-block d-md-none" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a data-toggle="modal" data-target="#chineseCert" class="d-none d-md-block" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
+                    <a href="{{ url_for('static', filename='files/chinese_characters_certificate.pdf') }}" class="d-block d-md-none" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">9/2023</h5>
@@ -88,7 +134,7 @@
                 <div class="col-8">
                     <h5>CUSTOMISING YOUR MODELS WITH TENSORFLOW 2</h5>
                     <p>Coursera - Imperial College London</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/SH7LXQGUBHQE" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/SH7LXQGUBHQE" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">7/2022</h5>
@@ -98,7 +144,7 @@
                 <div class="col-8">
                     <h5>THE ARDUINO PLATFORM AND C PROGRAMMING</h5>
                     <p>Coursera - University of California, Irvine</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/Y7J79A9Y3RFZ" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/Y7J79A9Y3RFZ" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">7/2022</h5>
@@ -108,7 +154,7 @@
                 <div class="col-8">
                     <h5>GETTING STARTED WITH TENSORFLOW 2</h5>
                     <p>Coursera - Imperial College London</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/987DUTDFZDV7" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/987DUTDFZDV7" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">6/2022</h5>
@@ -118,7 +164,7 @@
                 <div class="col-8">
                     <h5>INRODUCTION TO THE INTERNET OF THINGS AND EMBEDDED SYSTEMS</h5>
                     <p>Coursera - University of California, Irvine</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/5KTBE6RNFGS8" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/5KTBE6RNFGS8" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">5/2022</h5>
@@ -128,7 +174,7 @@
                 <div class="col-8">
                     <h5>FRONT-END WEB UI FRAMEWORKS AND TOOLS: BOOTSTRAP 4</h5>
                     <p>Coursera - The Hong Kong University of Science and Technology</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/D5X8FFT5XCRT" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/D5X8FFT5XCRT" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">5/2022</h5>
@@ -138,7 +184,7 @@
                 <div class="col-8">
                     <h5>APPLIED MACHINE LEARNING IN PYTHON</h5>
                     <p>Coursera - University of Michigan</p>
-                    <a href="https://www.coursera.org/account/accomplishments/certificate/KA6XHGFPYH9H" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> Certificate</a>
+                    <a href="https://www.coursera.org/account/accomplishments/certificate/KA6XHGFPYH9H" target="_blank" style="color: inherit;"><i class="fa-solid fa-file"></i> <u>Certificate</u></a>
                 </div>
                 <div class="col-4">
                     <h5 class="text-right">4/2022</h5>
